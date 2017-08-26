@@ -21,8 +21,8 @@ class Boost extends EventEmitter {
             }
         });
         this.noble.on('discover', peripheral => {
+            console.log('peripheral', peripheral.uuid, peripheral.address, peripheral.advertisement.localName);
             if (peripheral.advertisement.serviceUuids[0] === '000016231212efde1623785feabcd123') {
-                console.log(peripheral);
                 /**
                  * Fires when a Move Hub is found
                  * @event Boost#hub-found
@@ -52,8 +52,13 @@ class Boost extends EventEmitter {
                     if (error) {
                         console.error('discover services and characteristics', error);
                     }
-                    console.log(services[0].characteristics);
-                    characteristics.forEach(c => {
+
+                    services.forEach(s => {
+                        console.log('Service', s.uuid);
+                    });
+
+                        characteristics.forEach(c => {
+                        console.log('Characteristic', c.uuid);
                         if (c.uuid === '000016241212efde1623785feabcd123') {
                             this.characteristic = c;
                             /**
@@ -66,7 +71,10 @@ class Boost extends EventEmitter {
                                 console.log('<', data);
                             });
                             c.subscribe(err => {
-                                this.emit('error', err);
+                                if (err) {
+                                    this.emit('error', err);
+                                }
+
                             });
                         }
                     });
