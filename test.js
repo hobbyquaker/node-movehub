@@ -17,15 +17,13 @@ boost.on('hub-found', data => {
 boost.on('connect', () => {
     console.log('boost connect');
     boost.led('red');
+
     setTimeout(() => {
-        boost.led('green');
+        boost.motorAngle('A', 120, 100);
     }, 1000);
     setTimeout(() => {
-        boost.led('blue');
+        boost.motorAngle('A', 120, -100);
     }, 2000);
-    setTimeout(() => {
-        boost.led('white');
-    }, 3000);
 });
 
 boost.on('disconnect', () => {
