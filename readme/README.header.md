@@ -20,14 +20,14 @@ $ npm install movehub
 ## TODO
 
 - [x] LED control
-- [ ] Motor control
+- [x] Motor control
 - [ ] Sound playback
-- [ ] Distance sensor events
-- [ ] Color sensor events
-- [ ] Rotation events
-- [ ] Tilt sensor events
+- [ ] Emit distance sensor events
+- [ ] Emit color sensor events
+- [ ] Emit rotation events
+- [ ] Emit tilt sensor events
 - [ ] Connect to multiple Move Hubs
-- [ ] API Docs
+- [x] API Docs
 
 
 ## API
