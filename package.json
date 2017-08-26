@@ -42,7 +42,8 @@
   "xo": {
     "space": 4,
     "ignore": [
-      "test.js"
+      "test.js",
+      "Gulpfile.js"
     ]
   }
 }
