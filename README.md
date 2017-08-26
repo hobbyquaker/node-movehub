@@ -39,8 +39,8 @@ $ npm install movehub
 
 * [Boost](#Boost)
     * [.disconnect()](#Boost+disconnect)
-    * [.motorTime(port, milliseconds, [dutycyle], callback)](#Boost+motorTime)
-    * [.motorAngle(port, angle, [dutycyle], callback)](#Boost+motorAngle)
+    * [.motorTime(port, milliseconds, [dutycyle], [callback])](#Boost+motorTime)
+    * [.motorAngle(port, angle, [dutycyle], [callback])](#Boost+motorAngle)
     * [.led(color, [callback])](#Boost+led)
     * ["scanning"](#Boost+event_scanning)
     * ["hub-found"](#Boost+event_hub-found)
@@ -55,7 +55,7 @@ Disconnect from Move Hub
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
 <a name="Boost+motorTime"></a>
 
-### boost.motorTime(port, milliseconds, [dutycyle], callback)
+### boost.motorTime(port, milliseconds, [dutycyle], [callback])
 Run a motor for specific time
 
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
@@ -65,11 +65,11 @@ Run a motor for specific time
 | port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D` |
 | milliseconds | <code>number</code> |  |  |
 | [dutycyle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
-| callback | <code>function</code> |  |  |
+| [callback] | <code>function</code> |  |  |
 
 <a name="Boost+motorAngle"></a>
 
-### boost.motorAngle(port, angle, [dutycyle], callback)
+### boost.motorAngle(port, angle, [dutycyle], [callback])
 Turn a motor to specific angle
 
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
@@ -77,9 +77,9 @@ Turn a motor to specific angle
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D` |
-| angle | <code>number</code> |  | 0-360° |
+| angle | <code>number</code> |  | degrees from `0` to `360` |
 | [dutycyle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
-| callback | <code>function</code> |  |  |
+| [callback] | <code>function</code> |  |  |
 
 <a name="Boost+led"></a>
 

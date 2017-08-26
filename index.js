@@ -95,7 +95,7 @@ class Boost extends EventEmitter {
      * @param {number} milliseconds
      * @param {number} [dutycyle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
      * is counterclockwise.
-     * @param {function} callback
+     * @param {function} [callback]
      */
     motorTime(port, milliseconds, dutycyle, callback) {
         if (typeof port === 'string') {
@@ -110,7 +110,7 @@ class Boost extends EventEmitter {
      * @param {number} angle - degrees from `0` to `360`
      * @param {number} [dutycyle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
      * is counterclockwise.
-     * @param {function} callback
+     * @param {function} [callback]
      */
     motorAngle(port, angle, dutycyle, callback) {
         if (typeof port === 'string') {
