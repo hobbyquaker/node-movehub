@@ -12,7 +12,7 @@ class Boost extends EventEmitter {
                 this.noble.startScanning();
                 /**
                  * @event Boost#scanning
-                 * @type {boolean} reports when noble is starts/stops to scan for BLE devices
+                 * @type {boolean} reports `true`/`false` when noble starts/stops to scan for BLE devices
                  */
                 this.emit('scanning', true);
             } else {
@@ -24,6 +24,7 @@ class Boost extends EventEmitter {
             if (peripheral.advertisement.serviceUuids[0] === '000016231212efde1623785feabcd123') {
                 console.log(peripheral);
                 /**
+                 * Fires when a Move Hub is found
                  * @event Boost#hub-found
                  * @type {object}
                  * @property {string} uuid
@@ -56,6 +57,7 @@ class Boost extends EventEmitter {
                         if (c.uuid === '000016241212efde1623785feabcd123') {
                             this.characteristic = c;
                             /**
+                             * Fires when a connection to the Move Hub is established
                              * @event Boost#connect
                              */
                             this.emit('connect');
@@ -75,8 +77,8 @@ class Boost extends EventEmitter {
     }
 
     /**
-     * @method Boost#disconnect
      * Disconnect from Move Hub
+     * @method Boost#disconnect
      */
     disconnect() {
         if (this.connected) {
