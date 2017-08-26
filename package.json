@@ -29,9 +29,9 @@
     "noble": "^1.8.1"
   },
   "devDependencies": {
-    "camo-purge": "^1.0.2",
-    "gulp": "^3.9.1",
-    "jsdoc-to-markdown": "^3.0.0",
+    "camo-purge": "latest",
+    "gulp": "latest",
+    "jsdoc-to-markdown": "latest",
     "xo": "latest"
   },
   "engines": {
