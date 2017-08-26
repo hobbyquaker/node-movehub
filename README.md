@@ -2,6 +2,7 @@
 
 [![NPM version](https://badge.fury.io/js/movehub.svg)](http://badge.fury.io/js/movehub)
 [![Dependency Status](https://gemnasium.com/badges/github.com/hobbyquaker/node-movehub.svg)](https://gemnasium.com/github.com/hobbyquaker/node-movehub)
+[![Build Status](https://travis-ci.org/hobbyquaker/node-movehub.svg?branch=master)](https://travis-ci.org/hobbyquaker/node-movehub)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![License][mit-badge]][mit-url]
 
@@ -41,7 +42,7 @@ etc)
 
 * [Boost](#Boost)
     * [.disconnect()](#Boost+disconnect)
-    * [.motorTime(port, milliseconds, [dutycyle], [callback])](#Boost+motorTime)
+    * [.motorTime(port, seconds, [dutycyle], [callback])](#Boost+motorTime)
     * [.motorAngle(port, angle, [dutycyle], [callback])](#Boost+motorAngle)
     * [.led(color, [callback])](#Boost+led)
     * ["scanning"](#Boost+event_scanning)
@@ -57,7 +58,7 @@ Disconnect from Move Hub
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
 <a name="Boost+motorTime"></a>
 
-### boost.motorTime(port, milliseconds, [dutycyle], [callback])
+### boost.motorTime(port, seconds, [dutycyle], [callback])
 Run a motor for specific time
 
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
@@ -65,7 +66,7 @@ Run a motor for specific time
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D` |
-| milliseconds | <code>number</code> |  |  |
+| seconds | <code>number</code> |  |  |
 | [dutycyle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
 | [callback] | <code>function</code> |  |  |
 
