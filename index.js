@@ -72,7 +72,6 @@ class Boost extends EventEmitter {
                     });
                 });
             }
-
         });
     }
 
@@ -150,17 +149,17 @@ class Boost extends EventEmitter {
 
     encodeMotorTime(port, milliseconds, dutyCycle = 100) {
         if (dutyCycle < 0) {
-            dutyCycle = 0xff + dutyCycle;
+            dutyCycle = 0xFF + dutyCycle;
         }
         const [loTime, hiTime] = lsb16(milliseconds * 1000);
-        return Buffer.from([0x0c, 0x00, 0x81, port, 0x11, 0x09, loTime, hiTime, dutyCycle, 0x64, 0x7f, 0x03]);
+        return Buffer.from([0x0C, 0x00, 0x81, port, 0x11, 0x09, loTime, hiTime, dutyCycle, 0x64, 0x7F, 0x03]);
     }
     encodeMotorAngle(port, angle, dutyCycle = 100) {
         if (dutyCycle < 0) {
-            dutyCycle = 0xff + dutyCycle;
+            dutyCycle = 0xFF + dutyCycle;
         }
         const [loAngle, hiAngle] = lsb16(angle);
-        return Buffer.from([0x0e, 0x00, 0x81, port, 0x11, 0x0b, loAngle, hiAngle, 0x00, 0x00, dutyCycle, 0x64, 0x7f, 0x03]);
+        return Buffer.from([0x0E, 0x00, 0x81, port, 0x11, 0x0B, loAngle, hiAngle, 0x00, 0x00, dutyCycle, 0x64, 0x7F, 0x03]);
     }
     encodeLed(color) {
         if (color === false) {
@@ -188,9 +187,8 @@ class Boost extends EventEmitter {
     }
 }
 
-
 function lsb16(val) {
-    return [val & 0xff, (val >> 8) & 0xff];
+    return [val & 0xFF, (val >> 8) & 0xFF];
 }
 
 module.exports = new Boost();

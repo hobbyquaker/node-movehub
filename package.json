@@ -4,7 +4,7 @@
   "description": "Interface to the Lego Boost Move Hub",
   "main": "index.js",
   "scripts": {
-    "test": "xo --space 4"
+    "test": "xo --space 4 --ignore Gulpfile.js --ignore test.js"
   },
   "repository": {
     "type": "git",
