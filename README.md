@@ -1,7 +1,7 @@
 # movehub
 
 [![NPM version](https://badge.fury.io/js/movehub.svg)](http://badge.fury.io/js/movehub)
-[![Dependency Status](https://img.shields.io/gemnasium/hobbyquaker/node-movehub.svg?maxAge=2592000)](https://gemnasium.com/github.com/hobbyquaker/node-movehub)
+[![Dependency Status](https://gemnasium.com/badges/github.com/hobbyquaker/node-movehub.svg)](https://gemnasium.com/github.com/hobbyquaker/node-movehub)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![License][mit-badge]][mit-url]
 
@@ -27,10 +27,9 @@ $ npm install movehub
 - [ ] Emit rotation events
 - [ ] Emit tilt sensor events
 - [ ] Connect to multiple Move Hubs
-- [x] API Docs
+- [x] Generate API Docs
 - [ ] Command wrappers behaving like the command blocks in the app (specific for "Franky the Cat", "Vernie the Robot" 
 etc)
-
 
 ## API
 
