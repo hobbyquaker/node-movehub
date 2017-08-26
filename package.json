@@ -4,7 +4,7 @@
   "description": "Interface to the Lego Boost Move Hub",
   "main": "index.js",
   "scripts": {
-    "test": "xo --space 4 --ignore Gulpfile.js --ignore test.js"
+    "test": "camo-purge; gulp lint"
   },
   "repository": {
     "type": "git",
@@ -31,11 +31,18 @@
   "devDependencies": {
     "camo-purge": "latest",
     "gulp": "latest",
+    "gulp-xo": "latest",
     "jsdoc-to-markdown": "latest",
     "xo": "latest"
   },
   "engines": {
     "node": ">=6.0.0"
   },
-  "engineStrict": true
+  "engineStrict": true,
+  "xo": {
+    "space": 4,
+    "ignore": [
+      "test.js"
+    ]
+  }
 }
