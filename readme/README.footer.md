@@ -1,5 +1,10 @@
 
 
+## Contributing
+
+Pull Requests welcome! :-)
+
+
 ## Credits
 
 Thanks to [Jorge Pereira](https://github.com/JorgePe) who analyzed and documented the move hub ble protocol:

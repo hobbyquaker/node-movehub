@@ -126,6 +126,11 @@ Fires when a connection to the Move Hub is established
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
 
 
+## Contributing
+
+Pull Requests welcome! :-)
+
+
 ## Credits
 
 Thanks to [Jorge Pereira](https://github.com/JorgePe) who analyzed and documented the move hub ble protocol:
