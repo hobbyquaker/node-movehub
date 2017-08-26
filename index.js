@@ -1,5 +1,8 @@
 const EventEmitter = require('events').EventEmitter;
 
+/**
+ * @class Boost
+ */
 class Boost extends EventEmitter {
     constructor() {
         super();
@@ -7,6 +10,11 @@ class Boost extends EventEmitter {
         this.noble.on('stateChange', state => {
             if (state === 'poweredOn') {
                 this.noble.startScanning();
+                /**
+                 * @event scanning
+                 * @param {boolean}
+                 * Reports if noble is currently scanning for BLE devices
+                 */
                 this.emit('scanning', true);
             } else {
                 this.noble.stopScanning();
@@ -72,6 +80,17 @@ class Boost extends EventEmitter {
         this.write(this.characteristic, this.encodeMotorAngle(port, angle, dutycyle));
 
     }
+
+    /**
+     *
+     * @method led
+     * @param {boolean|number|string} color
+     * @param {function} [cb]
+     *
+     * If set to boolean `false` the LED is switched off, if set to `true` the LED will be white.
+     * Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`,
+     * `white`
+     */
     led(color, cb) {
         this.write(this.characteristic, this.encodeLed(color), cb);
     }

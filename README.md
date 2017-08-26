@@ -12,13 +12,9 @@
 
 ## Install
 
-``` 
+```
 $ npm install movehub
 ```
-
-## API
-
-... WIP
 
 
 ## TODO
@@ -34,9 +30,57 @@ $ npm install movehub
 - [ ] API Docs
 
 
+## API
+
+## Classes
+
+<dl>
+<dt><a href="#Boost">Boost</a></dt>
+<dd></dd>
+</dl>
+
+## Functions
+
+<dl>
+<dt><a href="#led">led(color, [cb])</a></dt>
+<dd></dd>
+</dl>
+
+## Events
+
+<dl>
+<dt><a href="#event_scanning">"scanning" (Reports)</a></dt>
+<dd></dd>
+</dl>
+
+<a name="Boost"></a>
+
+## Boost
+**Kind**: global class  
+<a name="led"></a>
+
+## led(color, [cb])
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| color | <code>boolean</code> \| <code>number</code> \| <code>string</code> |  |
+| [cb] | <code>function</code> | If set to boolean `false` the LED is switched off, if set to `true` the LED will be white. Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`, `white` |
+
+<a name="event_scanning"></a>
+
+## "scanning" (Reports)
+**Kind**: event emitted  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| Reports | <code>boolean</code> | if noble is currently scanning for BLE devices |
+
+
+
 ## Credits
 
-Thanks to [Jorge Pereira](https://github.com/JorgePe) who analyzed and documented the move hub ble protocol: 
+Thanks to [Jorge Pereira](https://github.com/JorgePe) who analyzed and documented the move hub ble protocol:
 https://github.com/JorgePe/BOOSTreveng
 
 
