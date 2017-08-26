@@ -106,7 +106,7 @@ class Boost extends EventEmitter {
      */
     motorTime(port, seconds, dutycyle, callback) {
         if (typeof port === 'string') {
-            port = this.encodeMotorPort(port);
+            port = this.encodePort(port);
         }
         this.write(this.characteristic, this.encodeMotorTime(port, seconds, dutycyle), callback);
     }
@@ -114,14 +114,14 @@ class Boost extends EventEmitter {
     /**
      * Turn a motor to specific angle
      * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`
-     * @param {number} angle - degrees from `0` to `360`
+     * @param {number} angle - degrees to turn from `0` to `4026531839`
      * @param {number} [dutycyle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
      * is counterclockwise.
      * @param {function} [callback]
      */
     motorAngle(port, angle, dutycyle, callback) {
         if (typeof port === 'string') {
-            port = this.encodeMotorPort(port);
+            port = this.encodePort(port);
         }
         this.write(this.characteristic, this.encodeMotorAngle(port, angle, dutycyle), callback);
     }
@@ -139,17 +139,43 @@ class Boost extends EventEmitter {
         this.write(this.characteristic, this.encodeLed(color), callback);
     }
 
+    /**
+     * Subscribe for sensor notifications
+     * @param {string|number} port - e.g. call `.subscribe('C')` if you have your distance sensor on port C.
+     * @param {function} [callback]
+     */
+    subscribe(port, callback) {
+        if (typeof port === 'string') {
+            port = this.encodePort(port);
+        }
+        this.write(this.characteristic, Buffer.from([0x0a, 0x00, 0x41, port, 0x08, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
+    }
+
+    /**
+     * Unsubscribe from sensor notifications
+     * @param {string|number} port
+     * @param {function} [callback]
+     */
+    unsubscribe(port, callback) {
+        if (typeof port === 'string') {
+            port = this.encodePort(port);
+        }
+        this.write(this.characteristic, Buffer.from([0x0a, 0x00, 0x41, port, 0x08, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+    }
+
     write(characteristic, data, cb) {
+        console.log('>', data);
         characteristic.write(data, true, cb);
     }
 
-    encodeMotorPort(str) {
+    encodePort(str) {
         const map = {
+            C: 0x01,
+            D: 0x02,
+            LED: 0x32,
             A: 0x37,
             B: 0x38,
             AB: 0x39,
-            C: 0x01,
-            D: 0x02
         };
         return map[str];
     }
@@ -165,8 +191,8 @@ class Boost extends EventEmitter {
         if (dutyCycle < 0) {
             dutyCycle = 0xFF + dutyCycle;
         }
-        const [loAngle, hiAngle] = lsb16(angle);
-        return Buffer.from([0x0E, 0x00, 0x81, port, 0x11, 0x0B, loAngle, hiAngle, 0x00, 0x00, dutyCycle, 0x64, 0x7F, 0x03]);
+        const [ang1, ang2, ang3, ang4] = lsb32(angle);
+        return Buffer.from([0x0E, 0x00, 0x81, port, 0x11, 0x0B, ang1, ang2, ang3, ang4, dutyCycle, 0x64, 0x7F, 0x03]);
     }
     encodeLed(color) {
         if (color === false) {
@@ -196,6 +222,10 @@ class Boost extends EventEmitter {
 
 function lsb16(val) {
     return [val & 0xFF, (val >> 8) & 0xFF];
+}
+
+function lsb32(val) {
+    return [val & 0xFF, (val >> 8) & 0xFF, (val >> 16) & 0xFF, (val >> 24) & 0xFF];
 }
 
 module.exports = new Boost();
