@@ -101,12 +101,12 @@ class Boost extends EventEmitter {
     /**
      *
      * @method Boost#led
-     * @param {boolean|number|string} color
-     * @param {function} [callback]
-     *
+     * @param {boolean|number|string} color*
      * If set to boolean `false` the LED is switched off, if set to `true` the LED will be white.
      * Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`,
      * `white`
+     *
+     * @param {function} [callback]
      */
     led(color, callback) {
         this.write(this.characteristic, this.encodeLed(color), callback);
