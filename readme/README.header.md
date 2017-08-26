@@ -27,8 +27,9 @@ $ npm install movehub
 - [ ] Emit rotation events
 - [ ] Emit tilt sensor events
 - [ ] Connect to multiple Move Hubs
-- [x] API Docs
-
+- [x] Generate API Docs
+- [ ] Command wrappers behaving like the command blocks in the app (specific for "Franky the Cat", "Vernie the Robot" 
+etc)
 
 ## API
 
