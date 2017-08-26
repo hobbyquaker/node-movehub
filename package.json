@@ -14,7 +14,10 @@
     "Lego",
     "Boost",
     "Move",
-    "Hub"
+    "Hub",
+    "BLE",
+    "Bluetooth",
+    "Robotics"
   ],
   "author": "Sebastian Raff <hq@ccu.io>",
   "license": "MIT",
