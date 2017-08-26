@@ -1,0 +1,31 @@
+{
+  "name": "movehub",
+  "version": "0.0.1",
+  "description": "Interface to the Lego Boost Move Hub",
+  "main": "index.js",
+  "scripts": {
+    "test": "xo --space 4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hobbyquaker/node-movehub.git"
+  },
+  "keywords": [
+    "Lego",
+    "Boost",
+    "Move",
+    "Hub"
+  ],
+  "author": "Sebastian Raff <hq@ccu.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hobbyquaker/node-movehub/issues"
+  },
+  "homepage": "https://github.com/hobbyquaker/node-movehub#readme",
+  "dependencies": {
+    "noble": "^1.8.1"
+  },
+  "devDependencies": {
+    "xo": "latest"
+  }
+}
