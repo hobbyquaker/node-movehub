@@ -32,6 +32,31 @@ $ npm install movehub
 
 ## API
 
+## Classes
+
+<dl>
+<dt><a href="#Boost">Boost</a></dt>
+<dd></dd>
+</dl>
+
+## Functions
+
+<dl>
+<dt><a href="#Boost_disconnect
+Disconnect from Move Hub">Boost:disconnect
+Disconnect from Move Hub()</a></dt>
+<dd></dd>
+</dl>
+
+## Events
+
+<dl>
+<dt><a href="#Boost_connect">"Boost:connect"</a></dt>
+<dd></dd>
+<dt><a href="#Boost_disconnect">"Boost:disconnect"</a></dt>
+<dd></dd>
+</dl>
+
 <a name="Boost"></a>
 
 ## Boost
@@ -71,6 +96,20 @@ reports when noble is starts/stops to scan for BLE devices
 | localName | <code>string</code> | 
 | rssi | <code>number</code> | 
 
+<a name="Boost_disconnect
+Disconnect from Move Hub"></a>
+
+## Boost:disconnect
+Disconnect from Move Hub()
+**Kind**: global function  
+<a name="Boost_connect"></a>
+
+## "Boost:connect"
+**Kind**: event emitted  
+<a name="Boost_disconnect"></a>
+
+## "Boost:disconnect"
+**Kind**: event emitted  
 
 
 ## Credits

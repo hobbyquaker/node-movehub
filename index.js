@@ -55,6 +55,9 @@ class Boost extends EventEmitter {
                     characteristics.forEach(c => {
                         if (c.uuid === '000016241212efde1623785feabcd123') {
                             this.characteristic = c;
+                            /**
+                             * @event Boost:connect
+                             */
                             this.emit('connect');
                             this.connected = true;
                             c.on('data', data => {
@@ -70,9 +73,17 @@ class Boost extends EventEmitter {
 
         });
     }
+
+    /**
+     * @method Boost:disconnect
+     * Disconnect from Move Hub
+     */
     disconnect() {
         if (this.connected) {
             this.peripheral.disconnect();
+            /**
+             * @event Boost:disconnect
+             */
             this.emit('disconnect');
         }
     }
@@ -87,7 +98,6 @@ class Boost extends EventEmitter {
         this.write(this.characteristic, this.encodeMotorAngle(port, angle, dutycyle));
 
     }
-
     /**
      *
      * @method Boost#led
@@ -98,8 +108,8 @@ class Boost extends EventEmitter {
      * Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`,
      * `white`
      */
-    led(color, cb) {
-        this.write(this.characteristic, this.encodeLed(color), cb);
+    led(color, callback) {
+        this.write(this.characteristic, this.encodeLed(color), callback);
     }
 
     encodeMotorTime(port, milliseconds, dutyCycle = 100) {
