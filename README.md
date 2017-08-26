@@ -32,49 +32,44 @@ $ npm install movehub
 
 ## API
 
-## Classes
-
-<dl>
-<dt><a href="#Boost">Boost</a></dt>
-<dd></dd>
-</dl>
-
-## Functions
-
-<dl>
-<dt><a href="#led">led(color, [cb])</a></dt>
-<dd></dd>
-</dl>
-
-## Events
-
-<dl>
-<dt><a href="#event_scanning">"scanning" (Reports)</a></dt>
-<dd></dd>
-</dl>
-
 <a name="Boost"></a>
 
 ## Boost
 **Kind**: global class  
-<a name="led"></a>
 
-## led(color, [cb])
-**Kind**: global function  
+* [Boost](#Boost)
+    * [.led(color, [callback])](#Boost+led)
+    * ["scanning"](#Boost+event_scanning)
+    * ["hub-found"](#Boost+event_hub-found)
+
+<a name="Boost+led"></a>
+
+### boost.led(color, [callback])
+**Kind**: instance method of [<code>Boost</code>](#Boost)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | color | <code>boolean</code> \| <code>number</code> \| <code>string</code> |  |
-| [cb] | <code>function</code> | If set to boolean `false` the LED is switched off, if set to `true` the LED will be white. Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`, `white` |
+| [callback] | <code>function</code> | If set to boolean `false` the LED is switched off, if set to `true` the LED will be white. Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`, `white` |
 
-<a name="event_scanning"></a>
+<a name="Boost+event_scanning"></a>
 
-## "scanning" (Reports)
-**Kind**: event emitted  
+### "scanning"
+reports when noble is starts/stops to scan for BLE devices
 
-| Param | Type | Description |
-| --- | --- | --- |
-| Reports | <code>boolean</code> | if noble is currently scanning for BLE devices |
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+<a name="Boost+event_hub-found"></a>
+
+### "hub-found"
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| uuid | <code>string</code> | 
+| address | <code>string</code> | 
+| localName | <code>string</code> | 
+| rssi | <code>number</code> | 
 
 
 

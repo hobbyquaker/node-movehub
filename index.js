@@ -11,9 +11,8 @@ class Boost extends EventEmitter {
             if (state === 'poweredOn') {
                 this.noble.startScanning();
                 /**
-                 * @event scanning
-                 * @param {boolean}
-                 * Reports if noble is currently scanning for BLE devices
+                 * @event Boost#scanning
+                 * @type {boolean} reports when noble is starts/stops to scan for BLE devices
                  */
                 this.emit('scanning', true);
             } else {
@@ -24,6 +23,14 @@ class Boost extends EventEmitter {
         this.noble.on('discover', peripheral => {
             if (peripheral.advertisement.serviceUuids[0] === '000016231212efde1623785feabcd123') {
                 console.log(peripheral);
+                /**
+                 * @event Boost#hub-found
+                 * @type {object}
+                 * @property {string} uuid
+                 * @property {string} address
+                 * @property {string} localName
+                 * @property {number} rssi
+                 */
                 this.emit('hub-found', {
                     uuid: peripheral.uuid,
                     address: peripheral.address,
@@ -83,9 +90,9 @@ class Boost extends EventEmitter {
 
     /**
      *
-     * @method led
+     * @method Boost#led
      * @param {boolean|number|string} color
-     * @param {function} [cb]
+     * @param {function} [callback]
      *
      * If set to boolean `false` the LED is switched off, if set to `true` the LED will be white.
      * Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`,
