@@ -57,7 +57,7 @@ class Boost extends EventEmitter {
                         console.log('Service', s.uuid);
                     });
 
-                        characteristics.forEach(c => {
+                    characteristics.forEach(c => {
                         console.log('Characteristic', c.uuid);
                         if (c.uuid === '000016241212efde1623785feabcd123') {
                             this.characteristic = c;
@@ -74,7 +74,6 @@ class Boost extends EventEmitter {
                                 if (err) {
                                     this.emit('error', err);
                                 }
-
                             });
                         }
                     });

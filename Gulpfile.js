@@ -9,10 +9,10 @@ gulp.task('lint', () =>
         .pipe(xo.failAfterError())
 );
 
-gulp.task('docs', function () {
+gulp.task('docs', () => {
     const fs = require('fs');
     let output = fs.readFileSync('readme/README.header.md');
     output += jsdoc2md.renderSync({files: './index.js'});
     output += fs.readFileSync('readme/README.footer.md');
-    fs.writeFileSync('README.md', output)
+    fs.writeFileSync('README.md', output);
 });
