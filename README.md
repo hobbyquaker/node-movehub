@@ -7,13 +7,31 @@
 
 > Node.js interface for the Lego Boost Move Hub
 
-**WORK IN PROGRESS - NON FUNCTIONAL UNTIL NOW!**
+**WORK IN PROGRESS - UNFINISHED!**
+
 
 ## Install
 
 ``` 
 $ npm install movehub
 ```
+
+## API
+
+... WIP
+
+
+## TODO
+
+- [x] LED control
+- [ ] Motor control
+- [ ] Sound playback
+- [ ] Distance sensor events
+- [ ] Color sensor events
+- [ ] Rotation events
+- [ ] Tilt sensor events
+- [ ] Connect to multiple Move Hubs
+- [ ] API Docs
 
 
 ## Credits
