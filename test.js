@@ -2,7 +2,7 @@ const boost = require('./index.js');
 
 
 
-boost.on('boost error', (err) => {
+boost.on('error', (err) => {
     console.error('boost error', err);
 });
 
@@ -10,8 +10,8 @@ boost.on('scanning', s => {
     console.log('scanning', s);
 });
 
-boost.on('hub-found', () => {
-    console.log('boost hub-found');
+boost.on('hub-found', data => {
+    console.log('boost hub-found', data);
 });
 
 boost.on('connect', () => {
@@ -25,7 +25,6 @@ boost.on('connect', () => {
     }, 2000);
     setTimeout(() => {
         boost.led('white');
-        boost.disconnect();
     }, 3000);
 });
 

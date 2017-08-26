@@ -15,7 +15,13 @@ class Boost extends EventEmitter {
         });
         this.noble.on('discover', peripheral => {
             if (peripheral.advertisement.serviceUuids[0] === '000016231212efde1623785feabcd123') {
-                this.emit('hub-found');
+                console.log(peripheral);
+                this.emit('hub-found', {
+                    uuid: peripheral.uuid,
+                    address: peripheral.address,
+                    localName: peripheral.advertisement.localName,
+                    rssi: peripheral.rssi
+                });
                 this.connect(peripheral);
             }
         });
@@ -27,11 +33,21 @@ class Boost extends EventEmitter {
             } else {
                 this.peripheral = peripheral;
                 peripheral.discoverAllServicesAndCharacteristics((error, services, characteristics) => {
+                    if (error) {
+                        console.error('discover services and characteristics', error);
+                    }
+                    console.log(services[0].characteristics);
                     characteristics.forEach(c => {
                         if (c.uuid === '000016241212efde1623785feabcd123') {
                             this.characteristic = c;
                             this.emit('connect');
                             this.connected = true;
+                            c.on('data', data => {
+                                console.log('<', data);
+                            });
+                            c.subscribe(err => {
+                                this.emit('error', err);
+                            });
                         }
                     });
                 });
