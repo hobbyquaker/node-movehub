@@ -5,57 +5,59 @@ class Boost extends EventEmitter {
         super();
         this.noble = require('noble');
         this.noble.on('stateChange', state => {
-            console.log('noble stateChange', state);
             if (state === 'poweredOn') {
                 this.noble.startScanning();
+                this.emit('scanning', true);
             } else {
                 this.noble.stopScanning();
+                this.emit('scanning', false);
             }
         });
         this.noble.on('discover', peripheral => {
-            console.log('Found device with local name: ' + peripheral.advertisement.localName);
-            console.log('advertising the following service uuid\'s: ' + peripheral.advertisement.serviceUuids);
             if (peripheral.advertisement.serviceUuids[0] === '000016231212efde1623785feabcd123') {
-                console.log('move hub found!');
-                peripheral.connect(err => {
-
-                    if (err) {
-                        console.error('connect', err);
-                    } else {
-                        console.log('connect!');
-
-                        peripheral.discoverAllServicesAndCharacteristics((error, services, characteristics) => {
-                            characteristics.forEach(c => {
-                                if (c.uuid === '000016241212efde1623785feabcd123') {
-                                    this.characteristic = c;
-                                    this.emit('connect');
-                                }
-                            });
-                        });
-                    }
-
-                });
+                this.emit('hub-found');
+                this.connect(peripheral);
             }
         });
     }
-    connect() {
+    connect(peripheral) {
+        peripheral.connect(err => {
+            if (err) {
+                this.emit('error', err);
+            } else {
+                this.peripheral = peripheral;
+                peripheral.discoverAllServicesAndCharacteristics((error, services, characteristics) => {
+                    characteristics.forEach(c => {
+                        if (c.uuid === '000016241212efde1623785feabcd123') {
+                            this.characteristic = c;
+                            this.emit('connect');
+                            this.connected = true;
+                        }
+                    });
+                });
+            }
 
-    }
-    write(characteristic, data) {
-        characteristic.write(data, true, err => {
-            console.error('write', err);
         });
     }
+    disconnect() {
+        if (this.connected) {
+            this.peripheral.disconnect();
+            this.emit('disconnect');
+        }
+    }
+    write(characteristic, data, cb) {
+        characteristic.write(data, true, cb);
+    }
     motorTime(port, milliseconds, dutycyle) {
-        write(this.characteristic, this.encodeMotorTime(port, milliseconds, dutycyle));
+        this.write(this.characteristic, this.encodeMotorTime(port, milliseconds, dutycyle));
 
     }
     motorAngle(port, angle, dutycyle) {
-        write(this.characteristic, this.encodeMotorAngle(port, angle, dutycyle));
+        this.write(this.characteristic, this.encodeMotorAngle(port, angle, dutycyle));
 
     }
-    led(color) {
-        this.write(this.characteristic, this.encodeLed(color));
+    led(color, cb) {
+        this.write(this.characteristic, this.encodeLed(color), cb);
     }
 
     encodeMotorTime(port, milliseconds, dutyCycle = 100) {
