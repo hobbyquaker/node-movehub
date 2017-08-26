@@ -56,7 +56,7 @@ class Boost extends EventEmitter {
                         if (c.uuid === '000016241212efde1623785feabcd123') {
                             this.characteristic = c;
                             /**
-                             * @event Boost:connect
+                             * @event Boost#connect
                              */
                             this.emit('connect');
                             this.connected = true;
@@ -75,14 +75,14 @@ class Boost extends EventEmitter {
     }
 
     /**
-     * @method Boost:disconnect
+     * @method Boost#disconnect
      * Disconnect from Move Hub
      */
     disconnect() {
         if (this.connected) {
             this.peripheral.disconnect();
             /**
-             * @event Boost:disconnect
+             * @event Boost#disconnect
              */
             this.emit('disconnect');
         }
