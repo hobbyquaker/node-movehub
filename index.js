@@ -92,16 +92,16 @@ class Boost extends EventEmitter {
     /**
      * Run a motor for specific time
      * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`
-     * @param {number} milliseconds
+     * @param {number} seconds
      * @param {number} [dutycyle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
      * is counterclockwise.
      * @param {function} [callback]
      */
-    motorTime(port, milliseconds, dutycyle, callback) {
+    motorTime(port, seconds, dutycyle, callback) {
         if (typeof port === 'string') {
             port = this.encodeMotorPort(port);
         }
-        this.write(this.characteristic, this.encodeMotorTime(port, milliseconds, dutycyle), callback);
+        this.write(this.characteristic, this.encodeMotorTime(port, seconds, dutycyle), callback);
     }
 
     /**
@@ -147,11 +147,11 @@ class Boost extends EventEmitter {
         return map[str];
     }
 
-    encodeMotorTime(port, milliseconds, dutyCycle = 100) {
+    encodeMotorTime(port, seconds, dutyCycle = 100) {
         if (dutyCycle < 0) {
             dutyCycle = 0xFF + dutyCycle;
         }
-        const [loTime, hiTime] = lsb16(milliseconds * 1000);
+        const [loTime, hiTime] = lsb16(seconds * 1000);
         return Buffer.from([0x0C, 0x00, 0x81, port, 0x11, 0x09, loTime, hiTime, dutyCycle, 0x64, 0x7F, 0x03]);
     }
     encodeMotorAngle(port, angle, dutyCycle = 100) {
