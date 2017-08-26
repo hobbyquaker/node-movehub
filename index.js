@@ -107,7 +107,7 @@ class Boost extends EventEmitter {
     /**
      * Turn a motor to specific angle
      * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`
-     * @param {number} angle - 0-360°
+     * @param {number} angle - degrees from `0` to `360`
      * @param {number} [dutycyle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
      * is counterclockwise.
      * @param {function} callback
