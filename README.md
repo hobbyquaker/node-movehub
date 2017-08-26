@@ -54,7 +54,7 @@ Disconnect from Move Hub()</a></dt>
 **Kind**: global class  
 
 * [Boost](#Boost)
-    * [.led(color*, [callback])](#Boost+led)
+    * [.led(color, [callback])](#Boost+led)
     * ["scanning"](#Boost+event_scanning)
     * ["hub-found"](#Boost+event_hub-found)
     * ["connect"](#Boost+event_connect)
@@ -62,12 +62,12 @@ Disconnect from Move Hub()</a></dt>
 
 <a name="Boost+led"></a>
 
-### boost.led(color*, [callback])
+### boost.led(color, [callback])
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| color* | <code>boolean</code> \| <code>number</code> \| <code>string</code> | If set to boolean `false` the LED is switched off, if set to `true` the LED will be white. Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`, `white` |
+| color | <code>boolean</code> \| <code>number</code> \| <code>string</code> | If set to boolean `false` the LED is switched off, if set to `true` the LED will be white. Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`, `white` |
 | [callback] | <code>function</code> |  |
 
 <a name="Boost+event_scanning"></a>
