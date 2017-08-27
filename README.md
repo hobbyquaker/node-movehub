@@ -23,6 +23,69 @@ See [test.js](test.js).
 
 ## API
 
+## Classes
+
+<dl>
+<dt><a href="#Boost">Boost</a></dt>
+<dd></dd>
+<dt><a href="#Hub">Hub</a></dt>
+<dd></dd>
+</dl>
+
+<a name="Boost"></a>
+
+## Boost
+**Kind**: global class  
+
+* [Boost](#Boost)
+    * [.connect(address, callback)](#Boost+connect)
+    * ["ble-ready" (bleReady)](#Boost+event_ble-ready)
+    * ["hub-found" (hub)](#Boost+event_hub-found)
+    * [.connectCallback](#Boost+connectCallback) : <code>function</code>
+
+<a name="Boost+connect"></a>
+
+### boost.connect(address, callback)
+**Kind**: instance method of [<code>Boost</code>](#Boost)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| address | <code>string</code> | MAC Address of the Hub |
+| callback | [<code>connectCallback</code>](#Boost+connectCallback) |  |
+
+<a name="Boost+event_ble-ready"></a>
+
+### "ble-ready" (bleReady)
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| bleReady | <code>boolean</code> | reports `true`/`false` when BLE is active |
+
+<a name="Boost+event_hub-found"></a>
+
+### "hub-found" (hub)
+Fires when a Move Hub is found
+
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type |
+| --- | --- |
+| hub | <code>object</code> | 
+| hub.uuid | <code>string</code> | 
+| hub.address | <code>string</code> | 
+| hub.localName | <code>string</code> | 
+
+<a name="Boost+connectCallback"></a>
+
+### boost.connectCallback : <code>function</code>
+**Kind**: instance typedef of [<code>Boost</code>](#Boost)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| error | <code>null</code> \| <code>error</code> |  |
+| hub | [<code>Hub</code>](#Hub) | instance of the Hub Class |
+
 <a name="Hub"></a>
 
 ## Hub
