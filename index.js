@@ -70,7 +70,6 @@ class Boost extends EventEmitter {
                  * @param hub.uuid {string}
                  * @param hub.address{string}
                  * @param hub.localName {string}
-                 * @param hub.rssi {number}
                  */
                 this.emit('hub-found', {
                     uuid: peripheral.uuid,

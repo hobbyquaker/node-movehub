@@ -154,7 +154,6 @@ Fires when a Move Hub is found
 | hub.uuid | <code>string</code> | 
 | hub.address | <code>string</code> | 
 | hub.localName | <code>string</code> | 
-| hub.rssi | <code>number</code> | 
 
 <a name="Boost+event_rssi"></a>
 
