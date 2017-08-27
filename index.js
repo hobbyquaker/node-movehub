@@ -92,33 +92,65 @@ class Boost extends EventEmitter {
                              */
                             this.emit('connect');
                             this.connected = true;
+
                             c.on('data', data => {
                                 switch (data[2]) {
+                                    // TODO 0x04
                                     case 0x45: {
-                                        /**
-                                         * Fires on color sensor changes (you have to subscribe the port of the
-                                         * sensor to receive these events).
-                                         * @event Boost#color
-                                         * @param color {string}
-                                         */
-                                        this.emit('color', this.num2color[data[4]]);
+                                        // TODO clarify if distinction via data.length is free of issues
+                                        switch (data.length) {
+                                            case 8: {
+                                                /**
+                                                 * Fires on color sensor changes (you have to subscribe the port of the
+                                                 * sensor to receive these events).
+                                                 * @event Boost#color
+                                                 * @param color {string}
+                                                 */
+                                                this.emit('color', this.num2color[data[4]]);
 
-                                        // TODO improve distance calculation!
-                                        let distance;
-                                        if (data[7] > 0 && data[5] < 2) {
-                                            distance = Math.floor(20 - (data[7] * 2.85));
-                                        } else if (data[5] > 9) {
-                                            distance = Infinity;
-                                        } else {
-                                            distance = Math.floor((20 + (data[5] * 18)));
+                                                // TODO improve distance calculation!
+                                                let distance;
+                                                if (data[7] > 0 && data[5] < 2) {
+                                                    distance = Math.floor(20 - (data[7] * 2.85));
+                                                } else if (data[5] > 9) {
+                                                    distance = Infinity;
+                                                } else {
+                                                    distance = Math.floor((20 + (data[5] * 18)));
+                                                }
+                                                /**
+                                                 * Fires on distance sensor changes (you have to subscribe the port of the
+                                                 * sensor to receive these events).
+                                                 * @event Boost#distance
+                                                 * @param distance {number} distance in millimeters
+                                                 */
+                                                this.emit('distance', distance);
+                                                break;
+                                            }
+                                            case 6: {
+                                                let roll = data[4];
+                                                let pitch = data[5];
+                                                if (roll & 0x80) {
+                                                    roll = roll - 0xff;
+                                                }
+                                                if (pitch & 0x80) {
+                                                    pitch = pitch - 0xff;
+                                                }
+                                                roll = -roll;
+                                                pitch = -pitch;
+                                                /**
+                                                 * @event Boost#tilt
+                                                 * @param tilt {object}
+                                                 * @param tilt.roll {number}
+                                                 * @param tilt.pitch {number}
+                                                 */
+                                                this.emit('tilt', {roll, pitch});
+                                                break;
+                                            }
+                                            default:
+                                                console.log('unknown sensor type 0x' + data[3].toString(16));
+                                                console.log('<', data);
                                         }
-                                        /**
-                                         * Fires on distance sensor changes (you have to subscribe the port of the
-                                         * sensor to receive these events).
-                                         * @event Boost#distance
-                                         * @param distance {number} distance in millimeters
-                                         */
-                                        this.emit('distance', distance);
+
                                         break;
                                     }
                                     case 0x82: {
@@ -219,11 +251,17 @@ class Boost extends EventEmitter {
      * @param {string|number} port - e.g. call `.subscribe('C')` if you have your distance/color sensor on port C.
      * @param {function} [callback]
      */
-    subscribe(port, callback) {
+    subscribe(port, option, callback) {
+        if (typeof option === 'function') {
+            callback = option;
+            option = 0x08;
+        } else if (typeof option === 'undefined') {
+            option = 0x08;
+        }
         if (typeof port === 'string') {
             port = this.encodePort(port);
         }
-        this.write(this.characteristic, Buffer.from([0x0A, 0x00, 0x41, port, 0x08, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
+        this.write(this.characteristic, Buffer.from([0x0A, 0x00, 0x41, port, option, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
 
     /**

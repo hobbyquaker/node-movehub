@@ -28,9 +28,14 @@ boost.on('port', details => {
     console.log('port', details);
 });
 
+boost.on('tilt', details => {
+    console.log('tilt', details);
+});
+
 boost.on('connect', () => {
     console.log('boost connect');
     boost.subscribe(0x01);
+    boost.subscribe(0x3a, 0x00);
 
     boost.led('red');
     boost.motorAngle('A', 180, 50);

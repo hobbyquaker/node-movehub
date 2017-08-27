@@ -52,6 +52,7 @@ etc)
     * ["connect"](#Boost+event_connect)
     * ["color" (color)](#Boost+event_color)
     * ["distance" (distance)](#Boost+event_distance)
+    * ["tilt" (tilt)](#Boost+event_tilt)
     * ["port" (port)](#Boost+event_port)
     * ["disconnect"](#Boost+event_disconnect)
 
@@ -178,6 +179,17 @@ sensor to receive these events).
 | Param | Type | Description |
 | --- | --- | --- |
 | distance | <code>number</code> | distance in millimeters |
+
+<a name="Boost+event_tilt"></a>
+
+### "tilt" (tilt)
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type |
+| --- | --- |
+| tilt | <code>object</code> | 
+| tilt.roll | <code>number</code> | 
+| tilt.pitch | <code>number</code> | 
 
 <a name="Boost+event_port"></a>
 
