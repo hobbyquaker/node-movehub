@@ -130,10 +130,10 @@ class Boost extends EventEmitter {
                                                 let roll = data[4];
                                                 let pitch = data[5];
                                                 if (roll & 0x80) {
-                                                    roll = roll - 0xff;
+                                                    roll -= 0xFF;
                                                 }
                                                 if (pitch & 0x80) {
-                                                    pitch = pitch - 0xff;
+                                                    pitch -= 0xFF;
                                                 }
                                                 roll = -roll;
                                                 pitch = -pitch;
