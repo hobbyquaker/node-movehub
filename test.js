@@ -24,8 +24,8 @@ boost.on('color', color => {
     console.log('color', color);
 });
 
-boost.on('port', (details) => {
-    console.log('port', '0x' + details.port.toString(16), '0x' + details.state.toString(16));
+boost.on('port', details => {
+    console.log('port', details);
 });
 
 boost.on('connect', () => {

@@ -6,6 +6,31 @@ const EventEmitter = require('events').EventEmitter;
 class Boost extends EventEmitter {
     constructor() {
         super();
+        this.port2num = {
+            C: 0x01,
+            D: 0x02,
+            LED: 0x32,
+            A: 0x37,
+            B: 0x38,
+            AB: 0x39
+        };
+        this.num2port = {};
+        Object.keys(this.port2num).forEach(p => {
+            this.num2port[this.port2num[p]] = p;
+        });
+        this.num2action = {
+            1: 'start',
+            5: 'conflict',
+            10: 'stop'
+        };
+        this.num2color = {
+            0: 'black',
+            3: 'blue',
+            5: 'green',
+            7: 'yellow',
+            9: 'red',
+            10: 'white'
+        };
         this.noble = require('noble');
         this.noble.on('stateChange', state => {
             if (state === 'poweredOn') {
@@ -74,8 +99,9 @@ class Boost extends EventEmitter {
                                          * Fires on color sensor changes (you have to subscribe the port of the
                                          * sensor to receive these events).
                                          * @event Boost#color
+                                         * @type {string} color
                                          */
-                                        this.emit('color', data[4]);
+                                        this.emit('color', this.num2color[data[4]]);
 
                                         // TODO improve distance calculation!
                                         let distance;
@@ -100,14 +126,14 @@ class Boost extends EventEmitter {
                                          * Fires on port changes
                                          * @event Boost#port
                                          * @type {object}
-                                         * @property {number} port
-                                         * @property {number} state - action start: `0x01`, action finished: `0x0a`,
-                                         * conflict: `0x05`
+                                         * @property {string} port
+                                         * @property {string} action
                                          */
-                                        this.emit('port', {port: data[3], state: data[4]});
+                                        this.emit('port', {port: this.num2port[data[3]], action: this.num2action[data[4]]});
                                         break;
                                     }
                                     default:
+                                        console.log('unknown message type 0x' + data[2].toString(16));
                                         console.log('<', data);
                                 }
                             });
@@ -209,16 +235,12 @@ class Boost extends EventEmitter {
         characteristic.write(data, true, cb);
     }
 
-    encodePort(str) {
-        const map = {
-            C: 0x01,
-            D: 0x02,
-            LED: 0x32,
-            A: 0x37,
-            B: 0x38,
-            AB: 0x39
-        };
-        return map[str];
+    encodePort(port) {
+        return this.port2num[port];
+    }
+
+    decodePort(num) {
+        return this.num2port[num];
     }
 
     encodeMotorTime(port, seconds, dutyCycle = 100) {
