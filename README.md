@@ -47,11 +47,11 @@ etc)
     * [.led(color, [callback])](#Boost+led)
     * [.subscribe(port, [callback])](#Boost+subscribe)
     * [.unsubscribe(port, [callback])](#Boost+unsubscribe)
-    * ["scanning"](#Boost+event_scanning)
-    * ["hub-found"](#Boost+event_hub-found)
+    * ["scanning" (scanning)](#Boost+event_scanning)
+    * ["hub-found" (hub)](#Boost+event_hub-found)
     * ["connect"](#Boost+event_connect)
-    * ["color"](#Boost+event_color)
-    * ["distance"](#Boost+event_distance)
+    * ["color" (color)](#Boost+event_color)
+    * ["distance" (distance)](#Boost+event_distance)
     * ["port"](#Boost+event_port)
     * ["disconnect"](#Boost+event_disconnect)
 
@@ -127,24 +127,27 @@ Unsubscribe from sensor notifications
 
 <a name="Boost+event_scanning"></a>
 
-### "scanning"
-reports `true`/`false` when noble starts/stops to scan for BLE devices
-
+### "scanning" (scanning)
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| scanning | <code>boolean</code> | reports `true`/`false` when noble starts/stops to scan for BLE devices |
+
 <a name="Boost+event_hub-found"></a>
 
-### "hub-found"
+### "hub-found" (hub)
 Fires when a Move Hub is found
 
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
-**Properties**
 
-| Name | Type |
+| Param | Type |
 | --- | --- |
-| uuid | <code>string</code> | 
-| address | <code>string</code> | 
-| localName | <code>string</code> | 
-| rssi | <code>number</code> | 
+| hub | <code>object</code> | 
+| hub.uuid | <code>string</code> | 
+| hub.address | <code>string</code> | 
+| hub.localName | <code>string</code> | 
+| hub.rssi | <code>number</code> | 
 
 <a name="Boost+event_connect"></a>
 
@@ -154,30 +157,40 @@ Fires when a connection to the Move Hub is established
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
 <a name="Boost+event_color"></a>
 
-### "color"
+### "color" (color)
 Fires on color sensor changes (you have to subscribe the port of the
 sensor to receive these events).
 
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type |
+| --- | --- |
+| color | <code>string</code> | 
+
 <a name="Boost+event_distance"></a>
 
-### "distance"
+### "distance" (distance)
 Fires on distance sensor changes (you have to subscribe the port of the
 sensor to receive these events).
 
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| distance | <code>number</code> | distance in millimeters |
+
 <a name="Boost+event_port"></a>
 
 ### "port"
 Fires on port changes
 
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
-**Properties**
+**Oaram**: port {object}  
 
-| Name | Type |
+| Param | Type |
 | --- | --- |
-| port | <code>string</code> | 
-| action | <code>string</code> | 
+| port.port | <code>string</code> | 
+| port.action | <code>string</code> | 
 
 <a name="Boost+event_disconnect"></a>
 
