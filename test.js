@@ -34,11 +34,15 @@ boost.on('tilt', details => {
 
 boost.on('connect', () => {
     console.log('boost connect');
-    boost.subscribe(0x01);
-    boost.subscribe(0x3a, 0x00);
+    boost.subscribe('TILT');
+    setTimeout(() => {
+        boost.subscribe('C');
+    }, 100);
+    setTimeout(() => {
 
-    boost.led('red');
-    boost.motorAngle('A', 180, 50);
+        boost.led('red');
+        boost.motorAngle('A', 180, 50);
+    }, 200);
 
     setTimeout(() => {
         boost.led('green');

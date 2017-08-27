@@ -12,7 +12,8 @@ class Boost extends EventEmitter {
             LED: 0x32,
             A: 0x37,
             B: 0x38,
-            AB: 0x39
+            AB: 0x39,
+            TILT: 0x3a
         };
         this.num2port = {};
         Object.keys(this.port2num).forEach(p => {
@@ -138,6 +139,7 @@ class Boost extends EventEmitter {
                                                 roll = -roll;
                                                 pitch = -pitch;
                                                 /**
+                                                 * To receive these events you have to call `.subscribe('TILT')`
                                                  * @event Boost#tilt
                                                  * @param tilt {object}
                                                  * @param tilt.roll {number}
@@ -252,14 +254,14 @@ class Boost extends EventEmitter {
      * @param {function} [callback]
      */
     subscribe(port, option, callback) {
-        if (typeof option === 'function') {
-            callback = option;
-            option = 0x08;
-        } else if (typeof option === 'undefined') {
-            option = 0x08;
-        }
         if (typeof port === 'string') {
             port = this.encodePort(port);
+        }
+        if (typeof option === 'function') {
+            callback = option;
+            option = port === 0x3a ? 0x00 : 0x08;
+        } else if (typeof option === 'undefined') {
+            option = port === 0x3a ? 0x00 : 0x08;
         }
         this.write(this.characteristic, Buffer.from([0x0A, 0x00, 0x41, port, option, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
