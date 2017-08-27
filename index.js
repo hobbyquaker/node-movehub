@@ -7,6 +7,7 @@ class Boost extends EventEmitter {
     constructor() {
         super();
         this.peripherals = {};
+        this.rssi = {};
         this.debug = false;
         this.log = this.debug ? console.log : () => {};
         this.autoSubscribe = true;
@@ -74,8 +75,7 @@ class Boost extends EventEmitter {
                 this.emit('hub-found', {
                     uuid: peripheral.uuid,
                     address: peripheral.address,
-                    localName: peripheral.advertisement.localName,
-                    rssi: peripheral.rssi
+                    localName: peripheral.advertisement.localName
                 });
                 this.connect(peripheral);
             }
@@ -87,6 +87,19 @@ class Boost extends EventEmitter {
                 this.emit('error', err);
             } else {
                 this.peripheral = peripheral;
+                setInterval(() => {
+                    peripheral.updateRssi();
+                }, 1000);
+                peripheral.on('rssiUpdate', rssi => {
+                    if (this.rssi !== rssi) {
+                        /**
+                         * @event Boost#rssi
+                         * @param rssi {number}
+                         */
+                        this.emit('rssi', rssi);
+                        this.rssi = rssi;
+                    }
+                });
                 peripheral.discoverAllServicesAndCharacteristics((error, services, characteristics) => {
                     if (error) {
                         console.error('discover services and characteristics', error);
@@ -200,7 +213,6 @@ class Boost extends EventEmitter {
                 break;
             }
             case 'TILT': {
-                console.log(data);
                 const roll = data.readInt8(4);
                 const pitch = data.readInt8(5);
 
@@ -215,9 +227,7 @@ class Boost extends EventEmitter {
             }
             case 'MOTOR':
             case 'IMOTOR': {
-                this.log(data);
                 const angle = data.readInt32LE(4);
-                this.log('angle', angle);
 
                 /**
                  * @event Boost#rotation
@@ -273,7 +283,7 @@ class Boost extends EventEmitter {
     /**
      * Turn a motor to specific angle
      * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`
-     * @param {number} angle - degrees to turn from `0` to `4026531839`
+     * @param {number} angle - degrees to turn from `0` to `2147483647`
      * @param {number} [dutycycle=100] motor power percentage from `-100` to `100`. If a negative value is given
      * rotation is counterclockwise.
      * @param {function} [callback]
@@ -345,7 +355,7 @@ class Boost extends EventEmitter {
             } else if (this.ports[port].deviceType === 'IMOTOR') {
                 this.subscribe(parseInt(port, 10), 2);
             } else if (this.ports[port].deviceType === 'MOTOR') {
-               // This.subscribe(parseInt(port, 10), 2);
+                this.subscribe(parseInt(port, 10), 2);
             }
         });
     }
