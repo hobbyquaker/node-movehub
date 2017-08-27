@@ -81,6 +81,8 @@ class Boost extends EventEmitter {
                                         let distance;
                                         if (data[7] > 0 && data[5] < 2) {
                                             distance = Math.floor(20 - (data[7] * 2.85));
+                                        } else if (data[5] > 9) {
+                                            distance = Infinity;
                                         } else {
                                             distance = Math.floor((20 + (data[5] * 18)));
                                         }
