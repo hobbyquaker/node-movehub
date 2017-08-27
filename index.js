@@ -37,7 +37,7 @@ class Boost extends EventEmitter {
                 this.noble.startScanning();
                 /**
                  * @event Boost#scanning
-                 * @type {boolean} reports `true`/`false` when noble starts/stops to scan for BLE devices
+                 * @param scanning {boolean} reports `true`/`false` when noble starts/stops to scan for BLE devices
                  */
                 this.emit('scanning', true);
             } else {
@@ -51,11 +51,11 @@ class Boost extends EventEmitter {
                 /**
                  * Fires when a Move Hub is found
                  * @event Boost#hub-found
-                 * @type {object}
-                 * @property {string} uuid
-                 * @property {string} address
-                 * @property {string} localName
-                 * @property {number} rssi
+                 * @param hub {object}
+                 * @param hub.uuid {string}
+                 * @param hub.address{string}
+                 * @param hub.localName {string}
+                 * @param hub.rssi {number}
                  */
                 this.emit('hub-found', {
                     uuid: peripheral.uuid,
@@ -99,7 +99,7 @@ class Boost extends EventEmitter {
                                          * Fires on color sensor changes (you have to subscribe the port of the
                                          * sensor to receive these events).
                                          * @event Boost#color
-                                         * @type {string} color
+                                         * @param color {string}
                                          */
                                         this.emit('color', this.num2color[data[4]]);
 
@@ -116,7 +116,7 @@ class Boost extends EventEmitter {
                                          * Fires on distance sensor changes (you have to subscribe the port of the
                                          * sensor to receive these events).
                                          * @event Boost#distance
-                                         * @type {number} distance in millimeters
+                                         * @param distance {number} distance in millimeters
                                          */
                                         this.emit('distance', distance);
                                         break;
@@ -125,9 +125,9 @@ class Boost extends EventEmitter {
                                         /**
                                          * Fires on port changes
                                          * @event Boost#port
-                                         * @type {object}
-                                         * @property {string} port
-                                         * @property {string} action
+                                         * @oaram port {object}
+                                         * @param port.port {string}
+                                         * @param port.action {string}
                                          */
                                         this.emit('port', {port: this.num2port[data[3]], action: this.num2action[data[4]]});
                                         break;
