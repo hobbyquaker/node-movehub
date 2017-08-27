@@ -8,8 +8,6 @@
 
 > Node.js interface for the Lego Boost Move Hub 🤖 🐱 🎸
 
-**WORK IN PROGRESS - UNFINISHED!**
-
 
 ## Install
 
@@ -18,21 +16,9 @@ $ npm install movehub
 ```
 
 
-## TODO
+## Usage example
 
-- [x] LED control
-- [x] Motor control
-- [x] Emit distance sensor events
-- [x] Emit color sensor events
-- [x] Emit rotation events
-- [x] Emit tilt sensor events
-- [x] Emit changed rssi values
-- [ ] Emit battery voltage
-- [ ] Connect to multiple Move Hubs
-- [x] Generate API Docs
-- [ ] ~~Command wrappers behaving like the command blocks in the app (specific for "Franky the Cat", "Vernie the Robot"
-etc)~~ will put that in another node module for modularities sake.
-- [ ] ~~Throttle write speed~~ doesn't seem to be necessary
+See [test.js](test.js).
 
 
 ## API
