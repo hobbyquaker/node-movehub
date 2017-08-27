@@ -32,6 +32,8 @@ $ npm install movehub
 - [x] Generate API Docs
 - [ ] Command wrappers behaving like the command blocks in the app (specific for "Franky the Cat", "Vernie the Robot" 
 etc)
+- [ ] Throttle write speed
+
 
 ## API
 
@@ -183,6 +185,8 @@ sensor to receive these events).
 <a name="Boost+event_tilt"></a>
 
 ### "tilt" (tilt)
+To receive these events you have to call `.subscribe('TILT')`
+
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
 
 | Param | Type |
