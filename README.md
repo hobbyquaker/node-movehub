@@ -42,8 +42,8 @@ etc)
 
 * [Boost](#Boost)
     * [.disconnect()](#Boost+disconnect)
-    * [.motorTime(port, seconds, [dutycyle], [callback])](#Boost+motorTime)
-    * [.motorAngle(port, angle, [dutycyle], [callback])](#Boost+motorAngle)
+    * [.motorTime(port, seconds, [dutycycle], [callback])](#Boost+motorTime)
+    * [.motorAngle(port, angle, [dutycycle], [callback])](#Boost+motorAngle)
     * [.led(color, [callback])](#Boost+led)
     * [.subscribe(port, [callback])](#Boost+subscribe)
     * [.unsubscribe(port, [callback])](#Boost+unsubscribe)
@@ -63,7 +63,7 @@ Disconnect from Move Hub
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
 <a name="Boost+motorTime"></a>
 
-### boost.motorTime(port, seconds, [dutycyle], [callback])
+### boost.motorTime(port, seconds, [dutycycle], [callback])
 Run a motor for specific time
 
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
@@ -72,12 +72,12 @@ Run a motor for specific time
 | --- | --- | --- | --- |
 | port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D` |
 | seconds | <code>number</code> |  |  |
-| [dutycyle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
+| [dutycycle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
 | [callback] | <code>function</code> |  |  |
 
 <a name="Boost+motorAngle"></a>
 
-### boost.motorAngle(port, angle, [dutycyle], [callback])
+### boost.motorAngle(port, angle, [dutycycle], [callback])
 Turn a motor to specific angle
 
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
@@ -86,7 +86,7 @@ Turn a motor to specific angle
 | --- | --- | --- | --- |
 | port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D` |
 | angle | <code>number</code> |  | degrees to turn from `0` to `4026531839` |
-| [dutycyle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
+| [dutycycle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
 | [callback] | <code>function</code> |  |  |
 
 <a name="Boost+led"></a>
