@@ -23,8 +23,8 @@ $ npm install movehub
 - [x] LED control
 - [x] Motor control
 - [ ] Sound playback
-- [ ] Emit distance sensor events
-- [ ] Emit color sensor events
+- [x] Emit distance sensor events
+- [x] Emit color sensor events
 - [ ] Emit rotation events
 - [ ] Emit tilt sensor events
 - [ ] Emit changed rssi values
@@ -45,9 +45,14 @@ etc)
     * [.motorTime(port, seconds, [dutycyle], [callback])](#Boost+motorTime)
     * [.motorAngle(port, angle, [dutycyle], [callback])](#Boost+motorAngle)
     * [.led(color, [callback])](#Boost+led)
+    * [.subscribe(port, [callback])](#Boost+subscribe)
+    * [.unsubscribe(port, [callback])](#Boost+unsubscribe)
     * ["scanning"](#Boost+event_scanning)
     * ["hub-found"](#Boost+event_hub-found)
     * ["connect"](#Boost+event_connect)
+    * ["color"](#Boost+event_color)
+    * ["distance"](#Boost+event_distance)
+    * ["port"](#Boost+event_port)
     * ["disconnect"](#Boost+event_disconnect)
 
 <a name="Boost+disconnect"></a>
@@ -80,7 +85,7 @@ Turn a motor to specific angle
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D` |
-| angle | <code>number</code> |  | degrees from `0` to `360` |
+| angle | <code>number</code> |  | degrees to turn from `0` to `4026531839` |
 | [dutycyle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
 | [callback] | <code>function</code> |  |  |
 
@@ -95,6 +100,30 @@ Control the LED on the Move Hub
 | --- | --- | --- |
 | color | <code>boolean</code> \| <code>number</code> \| <code>string</code> | If set to boolean `false` the LED is switched off, if set to `true` the LED will be white. Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`, `white` |
 | [callback] | <code>function</code> |  |
+
+<a name="Boost+subscribe"></a>
+
+### boost.subscribe(port, [callback])
+Subscribe for sensor notifications
+
+**Kind**: instance method of [<code>Boost</code>](#Boost)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> \| <code>number</code> | e.g. call `.subscribe('C')` if you have your distance/color sensor on port C. |
+| [callback] | <code>function</code> |  |
+
+<a name="Boost+unsubscribe"></a>
+
+### boost.unsubscribe(port, [callback])
+Unsubscribe from sensor notifications
+
+**Kind**: instance method of [<code>Boost</code>](#Boost)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> \| <code>number</code> | 
+| [callback] | <code>function</code> | 
 
 <a name="Boost+event_scanning"></a>
 
@@ -123,6 +152,33 @@ Fires when a Move Hub is found
 Fires when a connection to the Move Hub is established
 
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
+<a name="Boost+event_color"></a>
+
+### "color"
+Fires on color sensor changes (you have to subscribe the port of the
+sensor to receive these events).
+
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+<a name="Boost+event_distance"></a>
+
+### "distance"
+Fires on distance sensor changes (you have to subscribe the port of the
+sensor to receive these events).
+
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+<a name="Boost+event_port"></a>
+
+### "port"
+Fires on port changes
+
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| port | <code>number</code> |  |
+| state | <code>number</code> | action start: `0x01`, action finished: `0x0a`, conflict: `0x05` |
+
 <a name="Boost+event_disconnect"></a>
 
 ### "disconnect"

@@ -23,8 +23,8 @@ $ npm install movehub
 - [x] LED control
 - [x] Motor control
 - [ ] Sound playback
-- [ ] Emit distance sensor events
-- [ ] Emit color sensor events
+- [x] Emit distance sensor events
+- [x] Emit color sensor events
 - [ ] Emit rotation events
 - [ ] Emit tilt sensor events
 - [ ] Emit changed rssi values
