@@ -32,6 +32,8 @@ $ npm install movehub
 - [x] Generate API Docs
 - [ ] Command wrappers behaving like the command blocks in the app (specific for "Franky the Cat", "Vernie the Robot" 
 etc)
+- [ ] Throttle write speed
+
 
 ## API
 
