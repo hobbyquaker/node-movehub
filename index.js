@@ -68,9 +68,8 @@ class Boost extends EventEmitter {
                             this.emit('connect');
                             this.connected = true;
                             c.on('data', data => {
-                                console.log('<', data);
                                 switch (data[2]) {
-                                    case 0x45:
+                                    case 0x45: {
                                         /**
                                          * Fires on color sensor changes (you have to subscribe the port of the
                                          * sensor to receive these events).
@@ -93,7 +92,8 @@ class Boost extends EventEmitter {
                                          */
                                         this.emit('distance', distance);
                                         break;
-                                    case 0x82:
+                                    }
+                                    case 0x82: {
                                         /**
                                          * Fires on port changes
                                          * @event Boost#port
@@ -104,6 +104,9 @@ class Boost extends EventEmitter {
                                          */
                                         this.emit('port', {port: data[3], state: data[4]});
                                         break;
+                                    }
+                                    default:
+                                        console.log('<', data);
                                 }
                             });
                             c.subscribe(err => {
@@ -184,7 +187,7 @@ class Boost extends EventEmitter {
         if (typeof port === 'string') {
             port = this.encodePort(port);
         }
-        this.write(this.characteristic, Buffer.from([0x0a, 0x00, 0x41, port, 0x08, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
+        this.write(this.characteristic, Buffer.from([0x0A, 0x00, 0x41, port, 0x08, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
 
     /**
@@ -196,7 +199,7 @@ class Boost extends EventEmitter {
         if (typeof port === 'string') {
             port = this.encodePort(port);
         }
-        this.write(this.characteristic, Buffer.from([0x0a, 0x00, 0x41, port, 0x08, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+        this.write(this.characteristic, Buffer.from([0x0A, 0x00, 0x41, port, 0x08, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
     }
 
     write(characteristic, data, cb) {
@@ -211,7 +214,7 @@ class Boost extends EventEmitter {
             LED: 0x32,
             A: 0x37,
             B: 0x38,
-            AB: 0x39,
+            AB: 0x39
         };
         return map[str];
     }
