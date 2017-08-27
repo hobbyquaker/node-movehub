@@ -174,10 +174,10 @@ Fires on port changes
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
 **Properties**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| port | <code>number</code> |  |
-| state | <code>number</code> | action start: `0x01`, action finished: `0x0a`, conflict: `0x05` |
+| Name | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| action | <code>string</code> | 
 
 <a name="Boost+event_disconnect"></a>
 
