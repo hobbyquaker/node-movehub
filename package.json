@@ -1,6 +1,6 @@
 {
   "name": "movehub",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Interface to the Lego Boost Move Hub",
   "main": "index.js",
   "scripts": {
