@@ -69,6 +69,42 @@ class Boost extends EventEmitter {
                             this.connected = true;
                             c.on('data', data => {
                                 console.log('<', data);
+                                switch (data[2]) {
+                                    case 0x45:
+                                        /**
+                                         * Fires on color sensor changes (you have to subscribe the port of the
+                                         * sensor to receive these events).
+                                         * @event Boost#color
+                                         */
+                                        this.emit('color', data[4]);
+
+                                        // TODO improve distance calculation!
+                                        let distance;
+                                        if (data[7] > 0 && data[5] < 2) {
+                                            distance = Math.floor(20 - (data[7] * 2.85));
+                                        } else {
+                                            distance = Math.floor((20 + (data[5] * 18)));
+                                        }
+                                        /**
+                                         * Fires on distance sensor changes (you have to subscribe the port of the
+                                         * sensor to receive these events).
+                                         * @event Boost#distance
+                                         * @type {number} distance in millimeters
+                                         */
+                                        this.emit('distance', distance);
+                                        break;
+                                    case 0x82:
+                                        /**
+                                         * Fires on port changes
+                                         * @event Boost#port
+                                         * @type {object}
+                                         * @property {number} port
+                                         * @property {number} state - action start: `0x01`, action finished: `0x0a`,
+                                         * conflict: `0x05`
+                                         */
+                                        this.emit('port', {port: data[3], state: data[4]});
+                                        break;
+                                }
                             });
                             c.subscribe(err => {
                                 if (err) {
@@ -141,7 +177,7 @@ class Boost extends EventEmitter {
 
     /**
      * Subscribe for sensor notifications
-     * @param {string|number} port - e.g. call `.subscribe('C')` if you have your distance sensor on port C.
+     * @param {string|number} port - e.g. call `.subscribe('C')` if you have your distance/color sensor on port C.
      * @param {function} [callback]
      */
     subscribe(port, callback) {
