@@ -28,11 +28,12 @@ $ npm install movehub
 - [ ] Emit rotation events
 - [x] Emit tilt sensor events
 - [ ] Emit changed rssi values
+- [ ] Emit battery voltage
 - [ ] Connect to multiple Move Hubs
 - [x] Generate API Docs
 - [ ] Command wrappers behaving like the command blocks in the app (specific for "Franky the Cat", "Vernie the Robot" 
 etc)
-- [ ] Throttle write speed
+- ~~[ ] Throttle write speed~~ doesn't seem to be necessary
 
 
 ## API
