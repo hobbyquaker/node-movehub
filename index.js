@@ -1,4 +1,5 @@
 const EventEmitter = require('events').EventEmitter;
+const noble = require('noble');
 
 /**
  * @class Boost
@@ -6,10 +7,74 @@ const EventEmitter = require('events').EventEmitter;
 class Boost extends EventEmitter {
     constructor() {
         super();
-        this.peripherals = {};
-        this.rssi = {};
         this.debug = false;
         this.log = this.debug ? console.log : () => {};
+        this.peripherals = {};
+
+        noble.on('stateChange', state => {
+            this.nobleState = state;
+            if (state === 'poweredOn') {
+                noble.startScanning();
+                /**
+                 * @event Boost#ble-ready
+                 * @param bleReady {boolean} reports `true`/`false` when BLE is active
+                 */
+                this.emit('ble-ready', true);
+            } else {
+                noble.stopScanning();
+                this.emit('ble-ready', false);
+            }
+        });
+        noble.on('discover', peripheral => {
+            this.log('peripheral', peripheral.uuid, peripheral.address, peripheral.advertisement.localName);
+            if (peripheral.advertisement.serviceUuids[0] === '000016231212efde1623785feabcd123') {
+                this.peripherals[peripheral.address] = peripheral;
+                /**
+                 * Fires when a Move Hub is found
+                 * @event Boost#hub-found
+                 * @param hub {object}
+                 * @param hub.uuid {string}
+                 * @param hub.address{string}
+                 * @param hub.localName {string}
+                 */
+                this.emit('hub-found', {
+                    uuid: peripheral.uuid,
+                    address: peripheral.address,
+                    localName: peripheral.advertisement.localName
+                });
+            }
+        });
+    }
+
+    /**
+     * @method Boost#connect
+     * @param address {string} MAC Address of the Hub
+     * @param callback {function}
+     */
+    connect(address, callback) {
+        if (this.nobleState !== 'poweredOn') {
+            callback(new Error('can\'t connect. noble state ' + this.nobleState));
+            return;
+        }
+        if (!this.peripherals[address]) {
+            callback(new Error('can\'t connect. unknown peripheral address ' + address));
+            return;
+        }
+        callback(null, new Hub({peripheral: this.peripherals[address], debug: this.debug}));
+    }
+
+}
+
+/**
+ * @class Hub
+ */
+class Hub extends EventEmitter {
+    constructor(options) {
+        super();
+        console.log('Hub constructor', options);
+        const peripheral = options.peripheral;
+        this.rssi;
+        this.log = options.debug ? console.log : () => {};
         this.autoSubscribe = true;
         this.ports = {};
         this.num2type = {
@@ -45,40 +110,8 @@ class Boost extends EventEmitter {
             9: 'red',
             10: 'white'
         };
-        this.noble = require('noble');
-        this.noble.on('stateChange', state => {
-            if (state === 'poweredOn') {
-                this.noble.startScanning();
-                /**
-                 * @event Boost#ble-ready
-                 * @param bleReady {boolean} reports `true`/`false` when BLE is active
-                 */
-                this.emit('ble-ready', true);
-            } else {
-                this.noble.stopScanning();
-                this.emit('ble-ready', false);
-            }
-        });
-        this.noble.on('discover', peripheral => {
-            this.log('peripheral', peripheral.uuid, peripheral.address, peripheral.advertisement.localName);
-            if (peripheral.advertisement.serviceUuids[0] === '000016231212efde1623785feabcd123') {
-                this.peripherals[peripheral.address] = peripheral;
-                /**
-                 * Fires when a Move Hub is found
-                 * @event Boost#hub-found
-                 * @param hub {object}
-                 * @param hub.uuid {string}
-                 * @param hub.address{string}
-                 * @param hub.localName {string}
-                 */
-                this.emit('hub-found', {
-                    uuid: peripheral.uuid,
-                    address: peripheral.address,
-                    localName: peripheral.advertisement.localName
-                });
-                this.connect(peripheral);
-            }
-        });
+        this.connect(peripheral);
+
     }
     connect(peripheral) {
         peripheral.connect(err => {
@@ -92,7 +125,7 @@ class Boost extends EventEmitter {
                 peripheral.on('rssiUpdate', rssi => {
                     if (this.rssi !== rssi) {
                         /**
-                         * @event Boost#rssi
+                         * @event Hub#rssi
                          * @param rssi {number}
                          */
                         this.emit('rssi', rssi);
@@ -133,7 +166,7 @@ class Boost extends EventEmitter {
                 this.portInfoTimeout = setTimeout(() => {
                     /**
                      * Fires when a connection to the Move Hub is established
-                     * @event Boost#connect
+                     * @event Hub#connect
                      */
                     this.log(this.ports);
                     this.emit('connect');
@@ -167,7 +200,7 @@ class Boost extends EventEmitter {
             case 0x82: {
                 /**
                  * Fires on port changes
-                 * @event Boost#port
+                 * @event Hub#port
                  * @param port {object}
                  * @param port.port {string}
                  * @param port.action {string}
@@ -190,7 +223,7 @@ class Boost extends EventEmitter {
         switch (this.ports[data[3]].deviceType) {
             case 'DISTANCE': {
                 /**
-                 * @event Boost#color
+                 * @event Hub#color
                  * @param color {string}
                  */
                 this.emit('color', this.num2color[data[4]]);
@@ -205,7 +238,7 @@ class Boost extends EventEmitter {
                     distance = Math.floor((20 + (data[5] * 18)));
                 }
                 /**
-                 * @event Boost#distance
+                 * @event Hub#distance
                  * @param distance {number} distance in millimeters
                  */
                 this.emit('distance', distance);
@@ -216,7 +249,7 @@ class Boost extends EventEmitter {
                 const pitch = data.readInt8(5);
 
                 /**
-                 * @event Boost#tilt
+                 * @event Hub#tilt
                  * @param tilt {object}
                  * @param tilt.roll {number}
                  * @param tilt.pitch {number}
@@ -229,7 +262,7 @@ class Boost extends EventEmitter {
                 const angle = data.readInt32LE(4);
 
                 /**
-                 * @event Boost#rotation
+                 * @event Hub#rotation
                  * @param rotation {object}
                  * @param rotation.port {string}
                  * @param rotation.angle
@@ -248,13 +281,13 @@ class Boost extends EventEmitter {
 
     /**
      * Disconnect from Move Hub
-     * @method Boost#disconnect
+     * @method Hub#disconnect
      */
     disconnect() {
         if (this.connected) {
             this.peripheral.disconnect();
             /**
-             * @event Boost#disconnect
+             * @event Hub#disconnect
              */
             this.emit('disconnect');
         }
@@ -300,7 +333,7 @@ class Boost extends EventEmitter {
 
     /**
      * Control the LED on the Move Hub
-     * @method Boost#led
+     * @method Hub#led
      * @param {boolean|number|string} color
      * If set to boolean `false` the LED is switched off, if set to `true` the LED will be white.
      * Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`,
@@ -401,5 +434,6 @@ class Boost extends EventEmitter {
         return Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
     }
 }
+
 
 module.exports = new Boost();

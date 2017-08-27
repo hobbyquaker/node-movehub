@@ -1,57 +1,63 @@
 const boost = require('./index.js');
 
-boost.on('error', (err) => {
-    console.error('boost error', err);
+boost.on('ble-ready', status => {
+    console.log('ble-ready', status);
 });
 
-boost.on('ble-ready', s => {
-    console.log('ble-ready', s);
+boost.on('hub-found', hubDetails => {
+    console.log('boost hub-found', hubDetails);
+
+    // In this example we connect to every boost hub that is found
+    boost.connect(hubDetails.address, (err, hub) => {
+        if (err) {
+            throw err;
+        }
+        main(hub);
+    });
 });
 
-boost.on('hub-found', data => {
-    console.log('boost hub-found', data);
-});
+function main(hub) {
+    hub.on('error', (err) => {
+        console.error('hub error', err);
+    });
 
-boost.on('disconnect', () => {
-    console.log('boost disconnect');
-});
+    hub.on('disconnect', () => {
+        console.log('hub disconnect');
+    });
 
-boost.on('distance', distance => {
-    console.log('distance', distance, 'mm');
-});
+    hub.on('distance', distance => {
+        console.log('distance', distance, 'mm');
+    });
 
-boost.on('color', color => {
-    console.log('color', color);
-});
+    hub.on('color', color => {
+        console.log('color', color);
+    });
 
-boost.on('port', details => {
-    console.log('port', details);
-});
+    hub.on('port', details => {
+        console.log('port', details);
+    });
 
-boost.on('tilt', details => {
-    console.log('tilt', details);
-});
+    hub.on('tilt', details => {
+        console.log('tilt', details);
+    });
 
-boost.on('rotation', details => {
-    console.log('rotation', details);
-});
+    hub.on('rotation', details => {
+        console.log('rotation', details);
+    });
 
-boost.on('rssi', details => {
-    console.log('rssi', details);
-});
+    hub.on('rssi', details => {
+        console.log('rssi', details);
+    });
 
-boost.on('connect', () => {
-    console.log('boost connect');
+    hub.on('connect', () => {
+        console.log('hub connect');
 
+        hub.led('red');
+        hub.motorAngle('D', 100, 50);
 
-
-   boost.led('red');
-   boost.motorAngle('D', 100, 50);
-
-
-   setTimeout(() => {
-       boost.led('green');
-       boost.motorAngle('D', 100, -50);
-   }, 2000);
-
-});
+        setTimeout(() => {
+            hub.led('green');
+            hub.motorAngle('D', 100, -50);
+        }, 2000);
+    });
+}
