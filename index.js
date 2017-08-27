@@ -2,70 +2,6 @@ const EventEmitter = require('events').EventEmitter;
 const noble = require('noble');
 
 /**
- * @class Boost
- */
-class Boost extends EventEmitter {
-    constructor() {
-        super();
-        this.debug = false;
-        this.log = this.debug ? console.log : () => {};
-        this.peripherals = {};
-
-        noble.on('stateChange', state => {
-            this.nobleState = state;
-            if (state === 'poweredOn') {
-                noble.startScanning();
-                /**
-                 * @event Boost#ble-ready
-                 * @param bleReady {boolean} reports `true`/`false` when BLE is active
-                 */
-                this.emit('ble-ready', true);
-            } else {
-                noble.stopScanning();
-                this.emit('ble-ready', false);
-            }
-        });
-        noble.on('discover', peripheral => {
-            this.log('peripheral', peripheral.uuid, peripheral.address, peripheral.advertisement.localName);
-            if (peripheral.advertisement.serviceUuids[0] === '000016231212efde1623785feabcd123') {
-                this.peripherals[peripheral.address] = peripheral;
-                /**
-                 * Fires when a Move Hub is found
-                 * @event Boost#hub-found
-                 * @param hub {object}
-                 * @param hub.uuid {string}
-                 * @param hub.address{string}
-                 * @param hub.localName {string}
-                 */
-                this.emit('hub-found', {
-                    uuid: peripheral.uuid,
-                    address: peripheral.address,
-                    localName: peripheral.advertisement.localName
-                });
-            }
-        });
-    }
-
-    /**
-     * @method Boost#connect
-     * @param address {string} MAC Address of the Hub
-     * @param callback {function}
-     */
-    connect(address, callback) {
-        if (this.nobleState !== 'poweredOn') {
-            callback(new Error('can\'t connect. noble state ' + this.nobleState));
-            return;
-        }
-        if (!this.peripherals[address]) {
-            callback(new Error('can\'t connect. unknown peripheral address ' + address));
-            return;
-        }
-        callback(null, new Hub({peripheral: this.peripherals[address], debug: this.debug}));
-    }
-
-}
-
-/**
  * @class Hub
  */
 class Hub extends EventEmitter {
@@ -73,7 +9,6 @@ class Hub extends EventEmitter {
         super();
         console.log('Hub constructor', options);
         const peripheral = options.peripheral;
-        this.rssi;
         this.log = options.debug ? console.log : () => {};
         this.autoSubscribe = true;
         this.ports = {};
@@ -111,7 +46,6 @@ class Hub extends EventEmitter {
             10: 'white'
         };
         this.connect(peripheral);
-
     }
     connect(peripheral) {
         peripheral.connect(err => {
@@ -435,5 +369,68 @@ class Hub extends EventEmitter {
     }
 }
 
+/**
+ * @class Boost
+ */
+class Boost extends EventEmitter {
+    constructor() {
+        super();
+        this.debug = false;
+        this.log = this.debug ? console.log : () => {};
+        this.peripherals = {};
+
+        noble.on('stateChange', state => {
+            this.nobleState = state;
+            if (state === 'poweredOn') {
+                noble.startScanning();
+                /**
+                 * @event Boost#ble-ready
+                 * @param bleReady {boolean} reports `true`/`false` when BLE is active
+                 */
+                this.emit('ble-ready', true);
+            } else {
+                noble.stopScanning();
+                this.emit('ble-ready', false);
+            }
+        });
+        noble.on('discover', peripheral => {
+            this.log('peripheral', peripheral.uuid, peripheral.address, peripheral.advertisement.localName);
+            if (peripheral.advertisement.serviceUuids[0] === '000016231212efde1623785feabcd123') {
+                this.peripherals[peripheral.address] = peripheral;
+                /**
+                 * Fires when a Move Hub is found
+                 * @event Boost#hub-found
+                 * @param hub {object}
+                 * @param hub.uuid {string}
+                 * @param hub.address{string}
+                 * @param hub.localName {string}
+                 */
+                this.emit('hub-found', {
+                    uuid: peripheral.uuid,
+                    address: peripheral.address,
+                    localName: peripheral.advertisement.localName
+                });
+            }
+        });
+    }
+
+    /**
+     * @method Boost#connect
+     * @param address {string} MAC Address of the Hub
+     * @param callback {function}
+     */
+    connect(address, callback) {
+        if (this.nobleState !== 'poweredOn') {
+            callback(new Error('can\'t connect. noble state ' + this.nobleState));
+            return;
+        }
+        if (!this.peripherals[address]) {
+            callback(new Error('can\'t connect. unknown peripheral address ' + address));
+            return;
+        }
+        callback(null, new Hub({peripheral: this.peripherals[address], debug: this.debug}));
+    }
+
+}
 
 module.exports = new Boost();
