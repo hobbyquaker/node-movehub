@@ -6,6 +6,15 @@ const EventEmitter = require('events').EventEmitter;
 class Boost extends EventEmitter {
     constructor() {
         super();
+        this.autoSubscribe = true;
+        this.ports = {};
+        this.num2type = {
+            23: 'LED',
+            37: 'DISTANCE',
+            38: 'IMOTOR',
+            39: 'MOTOR',
+            40: 'TILT'
+        };
         this.port2num = {
             C: 0x01,
             D: 0x02,
@@ -87,20 +96,46 @@ class Boost extends EventEmitter {
                         console.log('Characteristic', c.uuid);
                         if (c.uuid === '000016241212efde1623785feabcd123') {
                             this.characteristic = c;
-                            /**
-                             * Fires when a connection to the Move Hub is established
-                             * @event Boost#connect
-                             */
-                            this.emit('connect');
-                            this.connected = true;
 
                             c.on('data', data => {
                                 switch (data[2]) {
-                                    // TODO 0x04
+                                    case 0x04: {
+                                        clearTimeout(this.portInfoTimeout);
+                                        this.portInfoTimeout = setTimeout(() => {
+                                            /**
+                                             * Fires when a connection to the Move Hub is established
+                                             * @event Boost#connect
+                                             */
+                                            console.log(this.ports);
+                                            this.emit('connect');
+                                            this.connected = true;
+
+                                            if (this.autoSubscribe) {
+                                                this.subscribeAll();
+                                            }
+
+                                        }, 200);
+
+                                        if (data[4] === 0x01) {
+                                            this.ports[data[3]] = {
+                                                type: 'port',
+                                                deviceType: this.num2type[data[5]],
+                                                deviceTypeNum: data[5]
+                                            }
+                                        } else if (data[4] === 0x02) {
+                                            this.ports[data[3]] = {
+                                                type: 'group',
+                                                deviceType: this.num2type[data[5]],
+                                                deviceTypeNum: data[5],
+                                                members: [data[7], data[8]]
+                                            }
+                                        }
+                                        break;
+                                    }
                                     case 0x45: {
                                         // TODO clarify if distinction via data.length is free of issues
-                                        switch (data.length) {
-                                            case 8: {
+                                        switch (this.ports[data[3]].deviceType) {
+                                            case 'DISTANCE': {
                                                 /**
                                                  * Fires on color sensor changes (you have to subscribe the port of the
                                                  * sensor to receive these events).
@@ -127,7 +162,7 @@ class Boost extends EventEmitter {
                                                 this.emit('distance', distance);
                                                 break;
                                             }
-                                            case 6: {
+                                            case 'TILT': {
                                                 let roll = data[4];
                                                 let pitch = data[5];
                                                 if (roll & 0x80) {
@@ -149,7 +184,7 @@ class Boost extends EventEmitter {
                                                 break;
                                             }
                                             default:
-                                                console.log('unknown sensor type 0x' + data[3].toString(16));
+                                                console.log('unknown sensor type 0x' + data[3].toString(16), data[3], this.ports[data[3]].deviceType);
                                                 console.log('<', data);
                                         }
 
@@ -276,6 +311,18 @@ class Boost extends EventEmitter {
             port = this.encodePort(port);
         }
         this.write(this.characteristic, Buffer.from([0x0A, 0x00, 0x41, port, 0x08, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+    }
+
+    subscribeAll() {
+        Object.keys(this.ports).forEach(port => {
+            if (this.ports[port].deviceType === 'DISTANCE') {
+                this.subscribe(parseInt(port, 10), 8);
+            } else if (this.ports[port].deviceType === 'TILT') {
+                this.subscribe(parseInt(port, 10), 0);
+            } else if (this.ports[port].deviceType === 'IMOTOR') {
+                this.subscribe(parseInt(port, 10), 2);
+            }
+        });
     }
 
     write(characteristic, data, cb) {
