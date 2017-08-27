@@ -13,7 +13,7 @@ class Boost extends EventEmitter {
             A: 0x37,
             B: 0x38,
             AB: 0x39,
-            TILT: 0x3a
+            TILT: 0x3A
         };
         this.num2port = {};
         Object.keys(this.port2num).forEach(p => {
@@ -259,9 +259,9 @@ class Boost extends EventEmitter {
         }
         if (typeof option === 'function') {
             callback = option;
-            option = port === 0x3a ? 0x00 : 0x08;
+            option = port === 0x3A ? 0x00 : 0x08;
         } else if (typeof option === 'undefined') {
-            option = port === 0x3a ? 0x00 : 0x08;
+            option = port === 0x3A ? 0x00 : 0x08;
         }
         this.write(this.characteristic, Buffer.from([0x0A, 0x00, 0x41, port, option, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
