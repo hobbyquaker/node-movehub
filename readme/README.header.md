@@ -26,12 +26,12 @@ $ npm install movehub
 - [x] Emit color sensor events
 - [x] Emit rotation events
 - [x] Emit tilt sensor events
-- [ ] Emit changed rssi values
+- [x] Emit changed rssi values
 - [ ] Emit battery voltage
 - [ ] Connect to multiple Move Hubs
 - [x] Generate API Docs
-- [ ] Command wrappers behaving like the command blocks in the app (specific for "Franky the Cat", "Vernie the Robot" 
-etc)
+- ~~[ ] Command wrappers behaving like the command blocks in the app (specific for "Franky the Cat", "Vernie the Robot"
+etc)~~ will put that in another node module for modularities sake.
 - ~~[ ] Throttle write speed~~ doesn't seem to be necessary
 
 

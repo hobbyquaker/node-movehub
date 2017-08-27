@@ -22,17 +22,16 @@ $ npm install movehub
 
 - [x] LED control
 - [x] Motor control
-- [ ] Sound playback
 - [x] Emit distance sensor events
 - [x] Emit color sensor events
-- [ ] Emit rotation events
+- [x] Emit rotation events
 - [x] Emit tilt sensor events
-- [ ] Emit changed rssi values
+- [x] Emit changed rssi values
 - [ ] Emit battery voltage
 - [ ] Connect to multiple Move Hubs
 - [x] Generate API Docs
-- [ ] Command wrappers behaving like the command blocks in the app (specific for "Franky the Cat", "Vernie the Robot" 
-etc)
+- ~~[ ] Command wrappers behaving like the command blocks in the app (specific for "Franky the Cat", "Vernie the Robot"
+etc)~~ will put that in another node module for modularities sake.
 - ~~[ ] Throttle write speed~~ doesn't seem to be necessary
 
 
@@ -48,15 +47,17 @@ etc)
     * [.motorTime(port, seconds, [dutycycle], [callback])](#Boost+motorTime)
     * [.motorAngle(port, angle, [dutycycle], [callback])](#Boost+motorAngle)
     * [.led(color, [callback])](#Boost+led)
-    * [.subscribe(port, [callback])](#Boost+subscribe)
-    * [.unsubscribe(port, [callback])](#Boost+unsubscribe)
-    * ["scanning" (scanning)](#Boost+event_scanning)
+    * [.subscribe(port, [option], [callback])](#Boost+subscribe)
+    * [.unsubscribe(port, [option], [callback])](#Boost+unsubscribe)
+    * ["ble-ready" (bleReady)](#Boost+event_ble-ready)
     * ["hub-found" (hub)](#Boost+event_hub-found)
+    * ["rssi" (rssi)](#Boost+event_rssi)
     * ["connect"](#Boost+event_connect)
+    * ["port" (port)](#Boost+event_port)
     * ["color" (color)](#Boost+event_color)
     * ["distance" (distance)](#Boost+event_distance)
     * ["tilt" (tilt)](#Boost+event_tilt)
-    * ["port" (port)](#Boost+event_port)
+    * ["rotation" (rotation)](#Boost+event_rotation)
     * ["disconnect"](#Boost+event_disconnect)
 
 <a name="Boost+disconnect"></a>
@@ -89,7 +90,7 @@ Turn a motor to specific angle
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D` |
-| angle | <code>number</code> |  | degrees to turn from `0` to `4026531839` |
+| angle | <code>number</code> |  | degrees to turn from `0` to `2147483647` |
 | [dutycycle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
 | [callback] | <code>function</code> |  |  |
 
@@ -107,36 +108,38 @@ Control the LED on the Move Hub
 
 <a name="Boost+subscribe"></a>
 
-### boost.subscribe(port, [callback])
+### boost.subscribe(port, [option], [callback])
 Subscribe for sensor notifications
 
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> \| <code>number</code> | e.g. call `.subscribe('C')` if you have your distance/color sensor on port C. |
-| [callback] | <code>function</code> |  |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| port | <code>string</code> \| <code>number</code> |  | e.g. call `.subscribe('C')` if you have your distance/color sensor on port C. |
+| [option] | <code>number</code> | <code>0</code> | Unknown meaning. Needs to be 0 for distance/color, 2 for motors, 8 for tilt |
+| [callback] | <code>function</code> |  |  |
 
 <a name="Boost+unsubscribe"></a>
 
-### boost.unsubscribe(port, [callback])
+### boost.unsubscribe(port, [option], [callback])
 Unsubscribe from sensor notifications
 
 **Kind**: instance method of [<code>Boost</code>](#Boost)  
 
-| Param | Type |
-| --- | --- |
-| port | <code>string</code> \| <code>number</code> | 
-| [callback] | <code>function</code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| port | <code>string</code> \| <code>number</code> |  |  |
+| [option] | <code>number</code> | <code>0</code> | Unknown meaning. Needs to be 0 for distance/color, 2 for motors, 8 for tilt |
+| [callback] | <code>function</code> |  |  |
 
-<a name="Boost+event_scanning"></a>
+<a name="Boost+event_ble-ready"></a>
 
-### "scanning" (scanning)
+### "ble-ready" (bleReady)
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| scanning | <code>boolean</code> | reports `true`/`false` when noble starts/stops to scan for BLE devices |
+| bleReady | <code>boolean</code> | reports `true`/`false` when BLE is active |
 
 <a name="Boost+event_hub-found"></a>
 
@@ -153,49 +156,21 @@ Fires when a Move Hub is found
 | hub.localName | <code>string</code> | 
 | hub.rssi | <code>number</code> | 
 
+<a name="Boost+event_rssi"></a>
+
+### "rssi" (rssi)
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type |
+| --- | --- |
+| rssi | <code>number</code> | 
+
 <a name="Boost+event_connect"></a>
 
 ### "connect"
 Fires when a connection to the Move Hub is established
 
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
-<a name="Boost+event_color"></a>
-
-### "color" (color)
-Fires on color sensor changes (you have to subscribe the port of the
-sensor to receive these events).
-
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
-
-| Param | Type |
-| --- | --- |
-| color | <code>string</code> | 
-
-<a name="Boost+event_distance"></a>
-
-### "distance" (distance)
-Fires on distance sensor changes (you have to subscribe the port of the
-sensor to receive these events).
-
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| distance | <code>number</code> | distance in millimeters |
-
-<a name="Boost+event_tilt"></a>
-
-### "tilt" (tilt)
-To receive these events you have to call `.subscribe('TILT')`
-
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
-
-| Param | Type |
-| --- | --- |
-| tilt | <code>object</code> | 
-| tilt.roll | <code>number</code> | 
-| tilt.pitch | <code>number</code> | 
-
 <a name="Boost+event_port"></a>
 
 ### "port" (port)
@@ -208,6 +183,46 @@ Fires on port changes
 | port | <code>object</code> | 
 | port.port | <code>string</code> | 
 | port.action | <code>string</code> | 
+
+<a name="Boost+event_color"></a>
+
+### "color" (color)
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type |
+| --- | --- |
+| color | <code>string</code> | 
+
+<a name="Boost+event_distance"></a>
+
+### "distance" (distance)
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| distance | <code>number</code> | distance in millimeters |
+
+<a name="Boost+event_tilt"></a>
+
+### "tilt" (tilt)
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type |
+| --- | --- |
+| tilt | <code>object</code> | 
+| tilt.roll | <code>number</code> | 
+| tilt.pitch | <code>number</code> | 
+
+<a name="Boost+event_rotation"></a>
+
+### "rotation" (rotation)
+**Kind**: event emitted by [<code>Boost</code>](#Boost)  
+
+| Param | Type |
+| --- | --- |
+| rotation | <code>object</code> | 
+| rotation.port | <code>string</code> | 
+| rotation.angle |  | 
 
 <a name="Boost+event_disconnect"></a>
 
