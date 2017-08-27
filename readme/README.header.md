@@ -26,7 +26,7 @@ $ npm install movehub
 - [x] Emit distance sensor events
 - [x] Emit color sensor events
 - [ ] Emit rotation events
-- [ ] Emit tilt sensor events
+- [x] Emit tilt sensor events
 - [ ] Emit changed rssi values
 - [ ] Connect to multiple Move Hubs
 - [x] Generate API Docs
