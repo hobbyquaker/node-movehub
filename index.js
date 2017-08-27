@@ -167,30 +167,38 @@ class Boost extends EventEmitter {
      * Run a motor for specific time
      * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`
      * @param {number} seconds
-     * @param {number} [dutycyle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
+     * @param {number} [dutycycle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
      * is counterclockwise.
      * @param {function} [callback]
      */
-    motorTime(port, seconds, dutycyle, callback) {
+    motorTime(port, seconds, dutycycle, callback) {
+        if (typeof dutycycle === 'function') {
+            callback = dutycycle;
+            dutycycle = 100;
+        }
         if (typeof port === 'string') {
             port = this.encodePort(port);
         }
-        this.write(this.characteristic, this.encodeMotorTime(port, seconds, dutycyle), callback);
+        this.write(this.characteristic, this.encodeMotorTime(port, seconds, dutycycle), callback);
     }
 
     /**
      * Turn a motor to specific angle
      * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`
      * @param {number} angle - degrees to turn from `0` to `4026531839`
-     * @param {number} [dutycyle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
-     * is counterclockwise.
+     * @param {number} [dutycycle=100] motor power percentage from `-100` to `100`. If a negative value is given
+     * rotation is counterclockwise.
      * @param {function} [callback]
      */
-    motorAngle(port, angle, dutycyle, callback) {
+    motorAngle(port, angle, dutycycle, callback) {
+        if (typeof dutycycle === 'function') {
+            callback = dutycycle;
+            dutycycle = 100;
+        }
         if (typeof port === 'string') {
             port = this.encodePort(port);
         }
-        this.write(this.characteristic, this.encodeMotorAngle(port, angle, dutycyle), callback);
+        this.write(this.characteristic, this.encodeMotorAngle(port, angle, dutycycle), callback);
     }
 
     /**
