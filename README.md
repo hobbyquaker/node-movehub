@@ -52,7 +52,7 @@ etc)
     * ["connect"](#Boost+event_connect)
     * ["color" (color)](#Boost+event_color)
     * ["distance" (distance)](#Boost+event_distance)
-    * ["port"](#Boost+event_port)
+    * ["port" (port)](#Boost+event_port)
     * ["disconnect"](#Boost+event_disconnect)
 
 <a name="Boost+disconnect"></a>
@@ -181,14 +181,14 @@ sensor to receive these events).
 
 <a name="Boost+event_port"></a>
 
-### "port"
+### "port" (port)
 Fires on port changes
 
 **Kind**: event emitted by [<code>Boost</code>](#Boost)  
-**Oaram**: port {object}  
 
 | Param | Type |
 | --- | --- |
+| port | <code>object</code> | 
 | port.port | <code>string</code> | 
 | port.action | <code>string</code> | 
 

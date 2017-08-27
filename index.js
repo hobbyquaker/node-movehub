@@ -125,7 +125,7 @@ class Boost extends EventEmitter {
                                         /**
                                          * Fires on port changes
                                          * @event Boost#port
-                                         * @oaram port {object}
+                                         * @param port {object}
                                          * @param port.port {string}
                                          * @param port.action {string}
                                          */
