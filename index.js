@@ -130,7 +130,6 @@ class Boost extends EventEmitter {
                     if (this.autoSubscribe) {
                         this.subscribeAll();
                     }
-
                 }, 200);
 
                 if (data[4] === 0x01) {
@@ -145,7 +144,7 @@ class Boost extends EventEmitter {
                         deviceType: this.num2type[data[5]],
                         deviceTypeNum: data[5],
                         members: [data[7], data[8]]
-                    }
+                    };
                 }
                 break;
             }
@@ -201,8 +200,9 @@ class Boost extends EventEmitter {
                 break;
             }
             case 'TILT': {
-                let roll = data.readInt8(4) ^ 0x80;
-                let pitch = data.readInt8(5) ^ 0x80;
+                console.log(data);
+                const roll = data.readInt8(4);
+                const pitch = data.readInt8(5);
 
                 /**
                  * @event Boost#tilt
@@ -216,7 +216,7 @@ class Boost extends EventEmitter {
             case 'MOTOR':
             case 'IMOTOR': {
                 this.log(data);
-                let angle = data.readInt32LE(4);
+                const angle = data.readInt32LE(4);
                 this.log('angle', angle);
 
                 /**
@@ -345,7 +345,7 @@ class Boost extends EventEmitter {
             } else if (this.ports[port].deviceType === 'IMOTOR') {
                 this.subscribe(parseInt(port, 10), 2);
             } else if (this.ports[port].deviceType === 'MOTOR') {
-               // this.subscribe(parseInt(port, 10), 2);
+               // This.subscribe(parseInt(port, 10), 2);
             }
         });
     }
@@ -391,10 +391,6 @@ class Boost extends EventEmitter {
         }
         return Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
     }
-}
-
-class Hub {
-
 }
 
 module.exports = new Boost();
