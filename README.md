@@ -6,9 +6,7 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![License][mit-badge]][mit-url]
 
-> Node.js interface for the Lego Boost Move Hub
-
-**WORK IN PROGRESS - UNFINISHED!**
+> Node.js interface for the Lego Boost Move Hub 🤖 🐱 🎸
 
 
 ## Install
@@ -25,41 +23,48 @@ See [test.js](test.js).
 
 ## API
 
-<a name="Boost"></a>
+## Classes
 
-## Boost
+<dl>
+<dt><a href="#Hub">Hub</a></dt>
+<dd></dd>
+<dt><a href="#Boost">Boost</a></dt>
+<dd></dd>
+</dl>
+
+<a name="Hub"></a>
+
+## Hub
 **Kind**: global class  
 
-* [Boost](#Boost)
-    * [.disconnect()](#Boost+disconnect)
-    * [.motorTime(port, seconds, [dutycycle], [callback])](#Boost+motorTime)
-    * [.motorAngle(port, angle, [dutycycle], [callback])](#Boost+motorAngle)
-    * [.led(color, [callback])](#Boost+led)
-    * [.subscribe(port, [option], [callback])](#Boost+subscribe)
-    * [.unsubscribe(port, [option], [callback])](#Boost+unsubscribe)
-    * ["ble-ready" (bleReady)](#Boost+event_ble-ready)
-    * ["hub-found" (hub)](#Boost+event_hub-found)
-    * ["rssi" (rssi)](#Boost+event_rssi)
-    * ["connect"](#Boost+event_connect)
-    * ["port" (port)](#Boost+event_port)
-    * ["color" (color)](#Boost+event_color)
-    * ["distance" (distance)](#Boost+event_distance)
-    * ["tilt" (tilt)](#Boost+event_tilt)
-    * ["rotation" (rotation)](#Boost+event_rotation)
-    * ["disconnect"](#Boost+event_disconnect)
+* [Hub](#Hub)
+    * [.disconnect()](#Hub+disconnect)
+    * [.motorTime(port, seconds, [dutycycle], [callback])](#Hub+motorTime)
+    * [.motorAngle(port, angle, [dutycycle], [callback])](#Hub+motorAngle)
+    * [.led(color, [callback])](#Hub+led)
+    * [.subscribe(port, [option], [callback])](#Hub+subscribe)
+    * [.unsubscribe(port, [option], [callback])](#Hub+unsubscribe)
+    * ["rssi" (rssi)](#Hub+event_rssi)
+    * ["connect"](#Hub+event_connect)
+    * ["port" (port)](#Hub+event_port)
+    * ["color" (color)](#Hub+event_color)
+    * ["distance" (distance)](#Hub+event_distance)
+    * ["tilt" (tilt)](#Hub+event_tilt)
+    * ["rotation" (rotation)](#Hub+event_rotation)
+    * ["disconnect"](#Hub+event_disconnect)
 
-<a name="Boost+disconnect"></a>
+<a name="Hub+disconnect"></a>
 
-### boost.disconnect()
+### hub.disconnect()
 Disconnect from Move Hub
 
-**Kind**: instance method of [<code>Boost</code>](#Boost)  
-<a name="Boost+motorTime"></a>
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
+<a name="Hub+motorTime"></a>
 
-### boost.motorTime(port, seconds, [dutycycle], [callback])
+### hub.motorTime(port, seconds, [dutycycle], [callback])
 Run a motor for specific time
 
-**Kind**: instance method of [<code>Boost</code>](#Boost)  
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -68,12 +73,12 @@ Run a motor for specific time
 | [dutycycle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
 | [callback] | <code>function</code> |  |  |
 
-<a name="Boost+motorAngle"></a>
+<a name="Hub+motorAngle"></a>
 
-### boost.motorAngle(port, angle, [dutycycle], [callback])
+### hub.motorAngle(port, angle, [dutycycle], [callback])
 Turn a motor to specific angle
 
-**Kind**: instance method of [<code>Boost</code>](#Boost)  
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -82,24 +87,24 @@ Turn a motor to specific angle
 | [dutycycle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
 | [callback] | <code>function</code> |  |  |
 
-<a name="Boost+led"></a>
+<a name="Hub+led"></a>
 
-### boost.led(color, [callback])
+### hub.led(color, [callback])
 Control the LED on the Move Hub
 
-**Kind**: instance method of [<code>Boost</code>](#Boost)  
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | color | <code>boolean</code> \| <code>number</code> \| <code>string</code> | If set to boolean `false` the LED is switched off, if set to `true` the LED will be white. Possible string values: `off`, `pink`, `purple`, `blue`, `lightblue`, `cyan`, `green`, `yellow`, `orange`, `red`, `white` |
 | [callback] | <code>function</code> |  |
 
-<a name="Boost+subscribe"></a>
+<a name="Hub+subscribe"></a>
 
-### boost.subscribe(port, [option], [callback])
+### hub.subscribe(port, [option], [callback])
 Subscribe for sensor notifications
 
-**Kind**: instance method of [<code>Boost</code>](#Boost)  
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -107,18 +112,110 @@ Subscribe for sensor notifications
 | [option] | <code>number</code> | <code>0</code> | Unknown meaning. Needs to be 0 for distance/color, 2 for motors, 8 for tilt |
 | [callback] | <code>function</code> |  |  |
 
-<a name="Boost+unsubscribe"></a>
+<a name="Hub+unsubscribe"></a>
 
-### boost.unsubscribe(port, [option], [callback])
+### hub.unsubscribe(port, [option], [callback])
 Unsubscribe from sensor notifications
 
-**Kind**: instance method of [<code>Boost</code>](#Boost)  
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | port | <code>string</code> \| <code>number</code> |  |  |
 | [option] | <code>number</code> | <code>0</code> | Unknown meaning. Needs to be 0 for distance/color, 2 for motors, 8 for tilt |
 | [callback] | <code>function</code> |  |  |
+
+<a name="Hub+event_rssi"></a>
+
+### "rssi" (rssi)
+**Kind**: event emitted by [<code>Hub</code>](#Hub)  
+
+| Param | Type |
+| --- | --- |
+| rssi | <code>number</code> | 
+
+<a name="Hub+event_connect"></a>
+
+### "connect"
+Fires when a connection to the Move Hub is established
+
+**Kind**: event emitted by [<code>Hub</code>](#Hub)  
+<a name="Hub+event_port"></a>
+
+### "port" (port)
+Fires on port changes
+
+**Kind**: event emitted by [<code>Hub</code>](#Hub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>object</code> | 
+| port.port | <code>string</code> | 
+| port.action | <code>string</code> | 
+
+<a name="Hub+event_color"></a>
+
+### "color" (color)
+**Kind**: event emitted by [<code>Hub</code>](#Hub)  
+
+| Param | Type |
+| --- | --- |
+| color | <code>string</code> | 
+
+<a name="Hub+event_distance"></a>
+
+### "distance" (distance)
+**Kind**: event emitted by [<code>Hub</code>](#Hub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| distance | <code>number</code> | distance in millimeters |
+
+<a name="Hub+event_tilt"></a>
+
+### "tilt" (tilt)
+**Kind**: event emitted by [<code>Hub</code>](#Hub)  
+
+| Param | Type |
+| --- | --- |
+| tilt | <code>object</code> | 
+| tilt.roll | <code>number</code> | 
+| tilt.pitch | <code>number</code> | 
+
+<a name="Hub+event_rotation"></a>
+
+### "rotation" (rotation)
+**Kind**: event emitted by [<code>Hub</code>](#Hub)  
+
+| Param | Type |
+| --- | --- |
+| rotation | <code>object</code> | 
+| rotation.port | <code>string</code> | 
+| rotation.angle |  | 
+
+<a name="Hub+event_disconnect"></a>
+
+### "disconnect"
+**Kind**: event emitted by [<code>Hub</code>](#Hub)  
+<a name="Boost"></a>
+
+## Boost
+**Kind**: global class  
+
+* [Boost](#Boost)
+    * [.connect(address, callback)](#Boost+connect)
+    * ["ble-ready" (bleReady)](#Boost+event_ble-ready)
+    * ["hub-found" (hub)](#Boost+event_hub-found)
+
+<a name="Boost+connect"></a>
+
+### boost.connect(address, callback)
+**Kind**: instance method of [<code>Boost</code>](#Boost)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| address | <code>string</code> | MAC Address of the Hub |
+| callback | <code>function</code> |  |
 
 <a name="Boost+event_ble-ready"></a>
 
@@ -143,78 +240,6 @@ Fires when a Move Hub is found
 | hub.address | <code>string</code> | 
 | hub.localName | <code>string</code> | 
 
-<a name="Boost+event_rssi"></a>
-
-### "rssi" (rssi)
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
-
-| Param | Type |
-| --- | --- |
-| rssi | <code>number</code> | 
-
-<a name="Boost+event_connect"></a>
-
-### "connect"
-Fires when a connection to the Move Hub is established
-
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
-<a name="Boost+event_port"></a>
-
-### "port" (port)
-Fires on port changes
-
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
-
-| Param | Type |
-| --- | --- |
-| port | <code>object</code> | 
-| port.port | <code>string</code> | 
-| port.action | <code>string</code> | 
-
-<a name="Boost+event_color"></a>
-
-### "color" (color)
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
-
-| Param | Type |
-| --- | --- |
-| color | <code>string</code> | 
-
-<a name="Boost+event_distance"></a>
-
-### "distance" (distance)
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| distance | <code>number</code> | distance in millimeters |
-
-<a name="Boost+event_tilt"></a>
-
-### "tilt" (tilt)
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
-
-| Param | Type |
-| --- | --- |
-| tilt | <code>object</code> | 
-| tilt.roll | <code>number</code> | 
-| tilt.pitch | <code>number</code> | 
-
-<a name="Boost+event_rotation"></a>
-
-### "rotation" (rotation)
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
-
-| Param | Type |
-| --- | --- |
-| rotation | <code>object</code> | 
-| rotation.port | <code>string</code> | 
-| rotation.angle |  | 
-
-<a name="Boost+event_disconnect"></a>
-
-### "disconnect"
-**Kind**: event emitted by [<code>Boost</code>](#Boost)  
 
 
 ## Contributing
