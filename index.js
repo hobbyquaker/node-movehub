@@ -313,7 +313,7 @@ class Hub extends EventEmitter {
         if (typeof port === 'string') {
             port = this.port2num[port];
         }
-        this.write(this.characteristic, this.encodeMotorTime(port, seconds, dutycycle), callback);
+        this.write(this.encodeMotorTime(port, seconds, dutycycle), callback);
     }
 
     /**
@@ -332,7 +332,7 @@ class Hub extends EventEmitter {
         if (typeof port === 'string') {
             port = this.port2num[port];
         }
-        this.write(this.characteristic, this.encodeMotorAngle(port, angle, dutycycle), callback);
+        this.write(this.encodeMotorAngle(port, angle, dutycycle), callback);
     }
 
     /**
@@ -345,7 +345,7 @@ class Hub extends EventEmitter {
      * @param {function} [callback]
      */
     led(color, callback) {
-        this.write(this.characteristic, this.encodeLed(color), callback);
+        this.write(this.encodeLed(color), callback);
     }
 
     /**
@@ -362,7 +362,7 @@ class Hub extends EventEmitter {
         if (typeof port === 'string') {
             port = this.port2num[port];
         }
-        this.write(this.characteristic, Buffer.from([0x0A, 0x00, 0x41, port, option, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
+        this.write(Buffer.from([0x0A, 0x00, 0x41, port, option, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
 
     /**
@@ -379,7 +379,7 @@ class Hub extends EventEmitter {
         if (typeof port === 'string') {
             port = this.port2num[port];
         }
-        this.write(this.characteristic, Buffer.from([0x0A, 0x00, 0x41, port, option, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+        this.write(Buffer.from([0x0A, 0x00, 0x41, port, option, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
     }
 
     subscribeAll() {
@@ -396,9 +396,13 @@ class Hub extends EventEmitter {
         });
     }
 
-    write(characteristic, data, cb) {
+    /**
+     * @param data
+     * @param cb
+     */
+    write(data, cb) {
         this.log('>', data);
-        characteristic.write(data, true, cb);
+        this.characteristic.write(data, true, cb);
     }
 
     encodeMotorTime(port, seconds, dutyCycle = 100) {
