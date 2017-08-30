@@ -401,6 +401,13 @@ class Hub extends EventEmitter {
      * @param cb
      */
     write(data, cb) {
+        if (typeof data === 'string') {
+            let arr = [];
+            data.split(' ').forEach(c => {
+                 arr.push(parseInt(c, 16));
+            });
+            data = Buffer.from(arr);
+        }
         this.log('>', data);
         this.characteristic.write(data, true, cb);
     }
