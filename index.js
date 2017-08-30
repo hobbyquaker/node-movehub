@@ -179,7 +179,7 @@ class Hub extends EventEmitter {
                     if (this.autoSubscribe) {
                         this.subscribeAll();
                     }
-                }, 350);
+                }, 1000);
 
                 if (data[4] === 0x01) {
                     this.ports[data[3]] = {
