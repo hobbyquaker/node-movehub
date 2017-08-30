@@ -423,6 +423,8 @@ class Hub extends EventEmitter {
     }
 
     /**
+     * Send data over BLE
+     * @method Hub#write
      * @param {string|Buffer} data If a string is given it has to have hex bytes separated by spaces, e.g. `0a 01 c3 b2`
      * @param {function} callback
      */

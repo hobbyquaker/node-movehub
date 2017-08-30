@@ -213,6 +213,8 @@ Unsubscribe from sensor notifications
 <a name="Hub+write"></a>
 
 ### hub.write(data, callback)
+Send data over BLE
+
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
 
 | Param | Type | Description |
