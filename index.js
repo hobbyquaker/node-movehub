@@ -179,7 +179,7 @@ class Hub extends EventEmitter {
                     if (this.autoSubscribe) {
                         this.subscribeAll();
                     }
-                }, 200);
+                }, 350);
 
                 if (data[4] === 0x01) {
                     this.ports[data[3]] = {
@@ -299,7 +299,7 @@ class Hub extends EventEmitter {
 
     /**
      * Run a motor for specific time
-     * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`
+     * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`.
      * @param {number} seconds
      * @param {number} [dutycycle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
      * is counterclockwise.
@@ -318,7 +318,7 @@ class Hub extends EventEmitter {
 
     /**
      * Turn a motor to specific angle
-     * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`
+     * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`.
      * @param {number} angle - degrees to turn from `0` to `2147483647`
      * @param {number} [dutycycle=100] motor power percentage from `-100` to `100`. If a negative value is given
      * rotation is counterclockwise.
@@ -408,7 +408,7 @@ class Hub extends EventEmitter {
         return buf;
     }
     encodeMotorAngle(port, angle, dutyCycle = 100) {
-        const buf = Buffer.from([0x0E, 0x00, 0x81, port, 0x11, 0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7F, 0x03]);
+        const buf = Buffer.from([0x0E, 0x00, 0x81, port, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7F, 0x03]);
         buf.writeUInt32LE(angle, 6);
         buf.writeInt8(dutyCycle, 10);
         return buf;
