@@ -423,10 +423,10 @@ class Hub extends EventEmitter {
     }
 
     /**
-     * @param data
-     * @param cb
+     * @param {string|Buffer} data If a string is given it has to have hex bytes separated by spaces, e.g. `0a 01 c3 b2`
+     * @param {function} callback
      */
-    write(data, cb) {
+    write(data, callback) {
         if (typeof data === 'string') {
             const arr = [];
             data.split(' ').forEach(c => {
@@ -435,7 +435,7 @@ class Hub extends EventEmitter {
             data = Buffer.from(arr);
         }
         this.log('>', data);
-        this.characteristic.write(data, true, cb);
+        this.characteristic.write(data, true, callback);
     }
 
     encodeMotorTimeMulti(port, seconds, dutyCycleA = 100, dutyCycleB = -100) {
