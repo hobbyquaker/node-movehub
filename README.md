@@ -93,11 +93,14 @@ Fires when a Move Hub is found
 
 * [Hub](#Hub)
     * [.disconnect()](#Hub+disconnect)
-    * [.motorTime(port, seconds, [dutycycle], [callback])](#Hub+motorTime)
-    * [.motorAngle(port, angle, [dutycycle], [callback])](#Hub+motorAngle)
+    * [.motorTime(port, seconds, [dutyCycle], [callback])](#Hub+motorTime)
+    * [.motorTimeMulti(seconds, dutyCycleA, dutyCycleB, callback)](#Hub+motorTimeMulti)
+    * [.motorAngle(port, angle, [dutyCycle], [callback])](#Hub+motorAngle)
+    * [.motorAngleMulti(angle, dutyCycleA, dutyCycleB, callback)](#Hub+motorAngleMulti)
     * [.led(color, [callback])](#Hub+led)
     * [.subscribe(port, [option], [callback])](#Hub+subscribe)
     * [.unsubscribe(port, [option], [callback])](#Hub+unsubscribe)
+    * [.write(data, callback)](#Hub+write)
     * ["rssi" (rssi)](#Hub+event_rssi)
     * ["connect"](#Hub+event_connect)
     * ["port" (port)](#Hub+event_port)
@@ -115,31 +118,59 @@ Disconnect from Move Hub
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
 <a name="Hub+motorTime"></a>
 
-### hub.motorTime(port, seconds, [dutycycle], [callback])
+### hub.motorTime(port, seconds, [dutyCycle], [callback])
 Run a motor for specific time
 
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D` |
+| port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D`. |
 | seconds | <code>number</code> |  |  |
-| [dutycycle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
+| [dutyCycle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
 | [callback] | <code>function</code> |  |  |
+
+<a name="Hub+motorTimeMulti"></a>
+
+### hub.motorTimeMulti(seconds, dutyCycleA, dutyCycleB, callback)
+Run both motors (A and B) for specific time
+
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| seconds | <code>number</code> |  |
+| dutyCycleA | <code>number</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
+| dutyCycleB | <code>number</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
+| callback | <code>function</code> |  |
 
 <a name="Hub+motorAngle"></a>
 
-### hub.motorAngle(port, angle, [dutycycle], [callback])
-Turn a motor to specific angle
+### hub.motorAngle(port, angle, [dutyCycle], [callback])
+Turn a motor by specific angle
 
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D` |
+| port | <code>string</code> \| <code>number</code> |  | possible string values: `A`, `B`, `AB`, `C`, `D`. |
 | angle | <code>number</code> |  | degrees to turn from `0` to `2147483647` |
-| [dutycycle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
+| [dutyCycle] | <code>number</code> | <code>100</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
 | [callback] | <code>function</code> |  |  |
+
+<a name="Hub+motorAngleMulti"></a>
+
+### hub.motorAngleMulti(angle, dutyCycleA, dutyCycleB, callback)
+Turn both motors (A and B) by specific angle
+
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| angle | <code>number</code> | degrees to turn from `0` to `2147483647` |
+| dutyCycleA | <code>number</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
+| dutyCycleB | <code>number</code> | motor power percentage from `-100` to `100`. If a negative value is given rotation is counterclockwise. |
+| callback | <code>function</code> |  |
 
 <a name="Hub+led"></a>
 
@@ -178,6 +209,16 @@ Unsubscribe from sensor notifications
 | port | <code>string</code> \| <code>number</code> |  |  |
 | [option] | <code>number</code> | <code>0</code> | Unknown meaning. Needs to be 0 for distance/color, 2 for motors, 8 for tilt |
 | [callback] | <code>function</code> |  |  |
+
+<a name="Hub+write"></a>
+
+### hub.write(data, callback)
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>string</code> \| <code>Buffer</code> | If a string is given it has to have hex bytes separated by spaces, e.g. `0a 01 c3 b2` |
+| callback | <code>function</code> |  |
 
 <a name="Hub+event_rssi"></a>
 
