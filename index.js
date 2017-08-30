@@ -301,38 +301,64 @@ class Hub extends EventEmitter {
      * Run a motor for specific time
      * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`.
      * @param {number} seconds
-     * @param {number} [dutycycle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
+     * @param {number} [dutyCycle=100] motor power percentage from `-100` to `100`. If a negative value is given rotation
      * is counterclockwise.
      * @param {function} [callback]
      */
-    motorTime(port, seconds, dutycycle, callback) {
-        if (typeof dutycycle === 'function') {
-            callback = dutycycle;
-            dutycycle = 100;
+    motorTime(port, seconds, dutyCycle, callback) {
+        if (typeof dutyCycle === 'function') {
+            callback = dutyCycle;
+            dutyCycle = 100;
         }
         if (typeof port === 'string') {
             port = this.port2num[port];
         }
-        this.write(this.encodeMotorTime(port, seconds, dutycycle), callback);
+        this.write(this.encodeMotorTime(port, seconds, dutyCycle), callback);
     }
 
     /**
-     * Turn a motor to specific angle
+     * Run both motors (A and B) for specific time
+     * @param {number} seconds
+     * @param {number} dutyCycleA motor power percentage from `-100` to `100`. If a negative value is given rotation
+     * is counterclockwise.
+     * @param {number} dutyCycleB motor power percentage from `-100` to `100`. If a negative value is given rotation
+     * is counterclockwise.
+     * @param {function} callback
+     */
+    motorTimeMulti(seconds, dutyCycleA, dutyCycleB, callback) {
+        this.write(this.encodeMotorTimeMulti(0x39, seconds, dutyCycleA, dutyCycleB), callback);
+    }
+
+    /**
+     * Turn a motor by specific angle
      * @param {string|number} port possible string values: `A`, `B`, `AB`, `C`, `D`.
      * @param {number} angle - degrees to turn from `0` to `2147483647`
-     * @param {number} [dutycycle=100] motor power percentage from `-100` to `100`. If a negative value is given
+     * @param {number} [dutyCycle=100] motor power percentage from `-100` to `100`. If a negative value is given
      * rotation is counterclockwise.
      * @param {function} [callback]
      */
-    motorAngle(port, angle, dutycycle, callback) {
-        if (typeof dutycycle === 'function') {
-            callback = dutycycle;
-            dutycycle = 100;
+    motorAngle(port, angle, dutyCycle, callback) {
+        if (typeof dutyCycle === 'function') {
+            callback = dutyCycle;
+            dutyCycle = 100;
         }
         if (typeof port === 'string') {
             port = this.port2num[port];
         }
-        this.write(this.encodeMotorAngle(port, angle, dutycycle), callback);
+        this.write(this.encodeMotorAngle(port, angle, dutyCycle), callback);
+    }
+
+    /**
+     * Turn both motors (A and B) by specific angle
+     * @param {number} angle degrees to turn from `0` to `2147483647`
+     * @param {number} dutyCycleA motor power percentage from `-100` to `100`. If a negative value is given
+     * rotation is counterclockwise.
+     * @param {number} dutyCycleB motor power percentage from `-100` to `100`. If a negative value is given
+     * rotation is counterclockwise.
+     * @param {function} callback
+     */
+    motorAngleMulti(angle, dutyCycleA, dutyCycleB, callback) {
+        this.write(this.encodeMotorAngleMulti(0x39, angle, dutyCycleA, dutyCycleB), callback);
     }
 
     /**
@@ -402,9 +428,9 @@ class Hub extends EventEmitter {
      */
     write(data, cb) {
         if (typeof data === 'string') {
-            let arr = [];
+            const arr = [];
             data.split(' ').forEach(c => {
-                 arr.push(parseInt(c, 16));
+                arr.push(parseInt(c, 16));
             });
             data = Buffer.from(arr);
         }
@@ -412,16 +438,32 @@ class Hub extends EventEmitter {
         this.characteristic.write(data, true, cb);
     }
 
+    encodeMotorTimeMulti(port, seconds, dutyCycleA = 100, dutyCycleB = -100) {
+        const buf = Buffer.from([0x0D, 0x00, 0x81, port, 0x11, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7F, 0x03]);
+        buf.writeUInt16LE(seconds * 1000, 6);
+        buf.writeInt8(dutyCycleA, 8);
+        buf.writeInt8(dutyCycleB, 9);
+        return buf;
+    }
     encodeMotorTime(port, seconds, dutyCycle = 100) {
         const buf = Buffer.from([0x0C, 0x00, 0x81, port, 0x11, 0x09, 0x00, 0x00, 0x00, 0x64, 0x7F, 0x03]);
         buf.writeUInt16LE(seconds * 1000, 6);
         buf.writeInt8(dutyCycle, 8);
         return buf;
     }
+    encodeMotorAngleMulti(port, angle, dutyCycleA = 100, dutyCycleB = -100) {
+        const buf = Buffer.from([0x0F, 0x00, 0x81, port, 0x11, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7F, 0x03]);
+        buf.writeUInt32LE(angle, 6);
+        buf.writeInt8(dutyCycleA, 10);
+        buf.writeInt8(dutyCycleB, 11);
+        console.log(buf);
+        return buf;
+    }
     encodeMotorAngle(port, angle, dutyCycle = 100) {
-        const buf = Buffer.from([0x0E, 0x00, 0x81, port, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7F, 0x03]);
+        const buf = Buffer.from([0x0E, 0x00, 0x81, port, 0x11, 0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7F, 0x03]);
         buf.writeUInt32LE(angle, 6);
         buf.writeInt8(dutyCycle, 10);
+        console.log(buf);
         return buf;
     }
     encodeLed(color) {
