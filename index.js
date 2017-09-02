@@ -77,7 +77,7 @@ class Boost extends EventEmitter {
 class Hub extends EventEmitter {
     constructor(options) {
         super();
-        console.log('Hub constructor', options);
+       // console.log('Hub constructor', options);
         const peripheral = options.peripheral;
         this.log = options.debug ? console.log : () => {};
         this.autoSubscribe = true;
@@ -123,6 +123,7 @@ class Hub extends EventEmitter {
                 this.emit('error', err);
             } else {
                 this.peripheral = peripheral;
+                clearInterval(this.reconnect);
                 setInterval(() => {
                     peripheral.updateRssi();
                 }, 1000);
@@ -135,6 +136,20 @@ class Hub extends EventEmitter {
                         this.emit('rssi', rssi);
                         this.rssi = rssi;
                     }
+                });
+                peripheral.on('disconnect', () => {
+                    /**
+                     * @event Hub#disconnect
+                     */
+                    this.emit('disconnect');
+                    if (this.noReconnect) {
+                        this.noReconnect = false;
+                    } else {
+                        this.reconnectInterval = setInterval(() => {
+                            this.connect(peripheral);
+                        }, 1000);
+                    }
+
                 });
                 peripheral.discoverAllServicesAndCharacteristics((error, services, characteristics) => {
                     if (error) {
@@ -290,10 +305,7 @@ class Hub extends EventEmitter {
     disconnect() {
         if (this.connected) {
             this.peripheral.disconnect();
-            /**
-             * @event Hub#disconnect
-             */
-            this.emit('disconnect');
+            this.noReconnect = true;
         }
     }
 
