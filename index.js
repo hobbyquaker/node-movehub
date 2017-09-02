@@ -146,7 +146,9 @@ class Hub extends EventEmitter {
                         this.noReconnect = false;
                     } else {
                         this.reconnectInterval = setInterval(() => {
-                            this.connect(peripheral);
+                            if (peripheral.state === 'disconnected') {
+                                this.connect(peripheral);
+                            }
                         }, 1000);
                     }
 
