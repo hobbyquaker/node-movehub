@@ -472,14 +472,12 @@ class Hub extends EventEmitter {
         buf.writeUInt32LE(angle, 6);
         buf.writeInt8(dutyCycleA, 10);
         buf.writeInt8(dutyCycleB, 11);
-        console.log(buf);
         return buf;
     }
     encodeMotorAngle(port, angle, dutyCycle = 100) {
         const buf = Buffer.from([0x0E, 0x00, 0x81, port, 0x11, 0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7F, 0x03]);
         buf.writeUInt32LE(angle, 6);
         buf.writeInt8(dutyCycle, 10);
-        console.log(buf);
         return buf;
     }
     encodeLed(color) {
