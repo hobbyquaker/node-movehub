@@ -15,6 +15,9 @@
 $ npm install movehub
 ```
 
+If you want to utilize the new async/await syntax see https://github.com/ttu/node-movehub-async which is based
+on this module.
+
 
 ## Usage example
 
