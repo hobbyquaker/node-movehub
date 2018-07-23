@@ -12,7 +12,7 @@ gulp.task('lint', () =>
 gulp.task('docs', () => {
     const fs = require('fs');
     let output = fs.readFileSync('readme/README.header.md');
-    output += jsdoc2md.renderSync({files: './index.js'});
+    output += jsdoc2md.renderSync({files: './movehub.js'});
     output += fs.readFileSync('readme/README.footer.md');
     fs.writeFileSync('README.md', output);
 });
