@@ -90,12 +90,12 @@ class Hub extends EventEmitter {
             40: 'TILT'
         };
         this.port2num = {
-            C: 0x01,
-            D: 0x02,
+            A: 0x00,
+            B: 0x01,
+            C: 0x02,
+            D: 0x03,
+            AB: 0x10,
             LED: 0x32,
-            A: 0x37,
-            B: 0x38,
-            AB: 0x39,
             TILT: 0x3A
         };
         this.num2port = {};
@@ -340,7 +340,7 @@ class Hub extends EventEmitter {
      * @param {function} callback
      */
     motorTimeMulti(seconds, dutyCycleA, dutyCycleB, callback) {
-        this.write(this.encodeMotorTimeMulti(0x39, seconds, dutyCycleA, dutyCycleB), callback);
+        this.write(this.encodeMotorTimeMulti(this.port2num['AB'], seconds, dutyCycleA, dutyCycleB), callback);
     }
 
     /**
@@ -372,7 +372,7 @@ class Hub extends EventEmitter {
      * @param {function} callback
      */
     motorAngleMulti(angle, dutyCycleA, dutyCycleB, callback) {
-        this.write(this.encodeMotorAngleMulti(0x39, angle, dutyCycleA, dutyCycleB), callback);
+        this.write(this.encodeMotorAngleMulti(this.port2num['AB'], angle, dutyCycleA, dutyCycleB), callback);
     }
 
     /**
